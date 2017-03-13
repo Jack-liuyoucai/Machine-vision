@@ -1,0 +1,104 @@
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[DebugChecksum]
+Checksum=-433803506
+[Exceptions]
+StopOnUncaught=_ 0
+StopOnThrow=_ 0
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[array_types]
+Fmt0=int8[30]	1	0
+Fmt1=uint8[101]	3	0
+Fmt2=uint8[10]	3	0
+Fmt3=uint8[121]	3	0
+Fmt4=uint8[128]	2	0
+Fmt5=uint8[134]	3	0
+Fmt6=uint8[157]	3	0
+Fmt7=uint8[20]	3	0
+Fmt8=uint8[51]	3	0
+Fmt9=uint8[58]	3	0
+Fmt10=uint8[60]	3	0
+Fmt11=uint8[64]	3	0
+Fmt12=uint8[80]	3	0
+Fmt13=uint8[81]	3	0
+Fmt14=uint8[82]	3	0
+Fmt15=uint8[87]	3	0
+Fmt16=uint8[90]	3	0
+Fmt17=uint8[93]	3	0
+Fmt18=uint8[94]	3	0
+Fmt19=uint8[95]	3	0
+Fmt20=uint8[96]	3	0
+Fmt21=uint8[97]	3	0
+Fmt22=unsigned char[64]	3	0
+[watch_formats]
+Fmt0={W}0:PC	4	0
+Fmt1={W}0:top_whiteline_next	3	0
+[InterruptLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[Breakpoints2]
+Count=0
+[Interrupts]
+Enabled=1
+[MemoryMap]
+Enabled=0
+Base=0
+UseAuto=0
+TypeViolation=1
+UnspecRange=1
+ActionState=1
+[Trace1]
+Enabled=0
+ShowSource=1
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Disassemble mode]
+mode=0
+[Breakpoints]
+Bp0=_ "STD_CODE" "{F:\刘友才 (H)\飞思卡尔\liuyoucai\lyclyc\lyc\src\Sources\App\main.c}.3078.15" 0 0 0 0 "" 0 "" 0
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\src\Sources\App\isr.h}.23.3" 0 0 0 0 "" 0 "" 0
+Count=2
+[Aliases]
+A0=_ "C:\Users\Administrator\Desktop\1_2\src\Settings\Start_up\crt0.s" ""
+A1=_ "C:\Users\Administrator\Desktop\4.13\src\Sources\Drivers\gpio\gpio.c" ""
+A2=_ "C:\Users\Administrator\Desktop\4.13\src\Sources\Drivers\nokia\nokia.c" ""
+A3=_ "C:\Users\Administrator\Desktop\4.13\src\Sources\Drivers\uart\uart.c" ""
+A4=_ "C:\Users\Administrator\Desktop\4.16\src\Sources\Drivers\adc\adc.c" ""
+A5=_ "C:\Users\Administrator\Desktop\4.16晚\src\Sources\App\main.c" ""
+A6=_ "C:\Users\Administrator\Desktop\4.16晚\src\Sources\Drivers\adc\adc.c" ""
+A7=_ "C:\Users\Administrator\Desktop\4.21\src\Sources\Drivers\oled\oled.c" ""
+A8=_ "C:\Users\Administrator\Desktop\4.21双峰\src\Sources\Cpu\vectors.c" ""
+A9=_ "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送 接受 像素处理  死机\src\Sources\Drivers\gpio\gpio.c" ""
+A10=_ "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送 接受 像素处理  死机\src\Sources\Drivers\uart\uart.c" ""
+A11=_ "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送 接受\src\Sources\App\main.c" ""
+A12=_ "C:\Users\Administrator\Desktop\4.25上位机\src\Sources\Drivers\uart\uart.c" ""
+A13=_ "C:\Users\Administrator\Desktop\4.27\src\Sources\Drivers\adc\adc.c" ""
+A14=_ "C:\Users\Administrator\Desktop\4.29\src\Sources\Drivers\adc\adc.c" ""
+A15=_ "D:\第九届飞思卡尔\备份\0710_0\src\Sources\App\main.c" ""
+A16=_ "E:\1_3\src\Sources\Drivers\FTM\FTM.c" ""
+A17=_ "E:\1_3\src\Sources\Drivers\adc\adc.c" ""
+A18=_ "F:\刘友才 (H)\飞思卡尔\liuyoucai\5.23 2.08米\src\Sources\Drivers\delay\delay.c" ""
+A19=_ "F:\刘友才 (H)\飞思卡尔\liuyoucai\5.23 2.08米\src\Sources\Drivers\gpio\gpio.c" ""
+A20=_ "F:\我的文档\飞思卡尔\本人\测试\415建立工程测试\src\Start_up\crt0.s" ""
+Count=21
+SuppressDialog=1

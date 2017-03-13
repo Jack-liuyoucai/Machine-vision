@@ -1,0 +1,368 @@
+###############################################################################
+#                                                                             #
+#                                                       27/Apr/2013  16:30:50 #
+# IAR ANSI C/C++ Compiler V6.30.4.23288/W32 EVALUATION for ARM                #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送      #
+#                    接受 像素处理  死机\src\Settings\Start_up\start.c        #
+#    Command line =  "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Settings\Start_up\start.c" -lCN  #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\RAM\List\" -lB                       #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\RAM\List\" -o                        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\RAM\Obj\" --no_cse --no_unroll       #
+#                    --no_inline --no_code_motion --no_tbaa --no_clustering   #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M4  #
+#                    -e --fpu=None --dlib_config "D:\Program Files\IAR        #
+#                    Systems\Embedded Workbench 6.0                           #
+#                    Evaluation\arm\INC\c\DLib_Config_Normal.h" -I            #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Cpu\" -I                 #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\App\" -I                 #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\adc\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\delay\" -I       #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\FTM\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\gpio\" -I        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\lptmr\" -I       #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\mcg\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\PIT\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\uart\" -I        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\oled\" -I        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\spi\" -On        #
+#                    --use_c++_inline                                         #
+#    List file    =  C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送      #
+#                    接受 像素处理  死机\RAM\List\start.lst                   #
+#    Object file  =  C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送      #
+#                    接受 像素处理  死机\RAM\Obj\start.o                      #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送 接受 像素处理  死机\src\Settings\Start_up\start.c
+      1          //-------------------------------------------------------------------------*
+      2          // 文件名:start.c                                                          *
+      3          // 说  明: CPU启动后进行系统配置                                           *
+      4          //-------------------------------------------------------------------------*
+      5          
+      6          //头文件
+      7          #include "common.h"
+      8          #include "wdog.h"
+      9          #include "mcg.h"
+     10          
+     11          #pragma section = ".data"
+     12          #pragma section = ".data_init"
+     13          #pragma section = ".bss"
+     14          #pragma section = "CodeRelocate"
+     15          #pragma section = "CodeRelocateRam" 
+     16          
+     17          //内部函数声明
+     18          //-------------------------------------------------------------------------*
+     19          //函数名: common_startup                                                   *
+     20          //功  能: 复制中断向量表到RAM中                                            * 
+     21          //参  数: 无								   *	
+     22          //说  明: 将ROM中的初始化数据拷贝到RAM中                                   *
+     23          //-------------------------------------------------------------------------*
+     24          void common_startup(void);
+     25          
+     26          void trace_clk_init(void);
+     27          
+     28          //-------------------------------------------------------------------------*
+     29          //函数名: start                                                            *
+     30          //功  能: 系统启动                                                         * 
+     31          //参  数: 无								   *	
+     32          //说  明: 无                                                               *
+     33          //-------------------------------------------------------------------------*
+
+   \                                 In section .text, align 2, keep-with-next
+     34          void start(void)
+     35          {
+   \                     start:
+   \   00000000   0xB580             PUSH     {R7,LR}
+     36              //关闭看门狗
+     37              wdog_disable();		
+   \   00000002   0x.... 0x....      BL       wdog_disable
+     38              //复制中断向量表到RAM中
+     39              common_startup();
+   \   00000006   0x.... 0x....      BL       common_startup
+     40              
+     41              trace_clk_init();
+   \   0000000A   0x.... 0x....      BL       trace_clk_init
+     42              
+     43              pll_init();
+   \   0000000E   0x.... 0x....      BL       pll_init
+     44              
+     45              
+     46              //进入主函数
+     47              main();
+   \   00000012   0x.... 0x....      BL       main
+     48              
+     49              while(1);
+   \                     ??start_0:
+   \   00000016   0xE7FE             B.N      ??start_0
+     50          }
+     51          
+     52          
+     53          //-------------------------------------------------------------------------*
+     54          //函数名: common_startup                                                   *
+     55          //功  能: 复制中断向量表到RAM中                                            * 
+     56          //参  数: 无								   *	
+     57          //说  明: 将ROM中的初始化数据拷贝到RAM中                                   *
+     58          //-------------------------------------------------------------------------*
+
+   \                                 In section .text, align 2, keep-with-next
+     59          void common_startup(void)
+     60          {
+   \                     common_startup:
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+     61              /* Declare a counter we'll use in all of the copy loops */
+     62              uint32 n;
+     63           
+     64           
+     65              /* Addresses for VECTOR_TABLE and VECTOR_RAM come from the linker file */  
+     66              extern uint32 __VECTOR_TABLE[];
+     67              extern uint32 __VECTOR_RAM[];
+     68          
+     69              /* Copy the vector table to RAM */
+     70              if (__VECTOR_RAM != __VECTOR_TABLE)
+   \   00000002   0x....             LDR.N    R0,??DataTable1
+   \   00000004   0x....             LDR.N    R1,??DataTable1_1
+   \   00000006   0x4288             CMP      R0,R1
+   \   00000008   0xD00C             BEQ.N    ??common_startup_0
+     71              {
+     72                  for (n = 0; n < 0x410; n++)
+   \   0000000A   0x2000             MOVS     R0,#+0
+   \   0000000C   0x0004             MOVS     R4,R0
+   \                     ??common_startup_1:
+   \   0000000E   0xF5B4 0x6F82      CMP      R4,#+1040
+   \   00000012   0xD207             BCS.N    ??common_startup_0
+     73                      __VECTOR_RAM[n] = __VECTOR_TABLE[n];
+   \   00000014   0x....             LDR.N    R0,??DataTable1
+   \   00000016   0x....             LDR.N    R1,??DataTable1_1
+   \   00000018   0xF851 0x1024      LDR      R1,[R1, R4, LSL #+2]
+   \   0000001C   0xF840 0x1024      STR      R1,[R0, R4, LSL #+2]
+   \   00000020   0x1C64             ADDS     R4,R4,#+1
+   \   00000022   0xE7F4             B.N      ??common_startup_1
+     74              }
+     75              /* Point the VTOR to the new copy of the vector table */
+     76              write_vtor((uint32)__VECTOR_RAM);    
+   \                     ??common_startup_0:
+   \   00000024   0x....             LDR.N    R0,??DataTable1
+   \   00000026   0x.... 0x....      BL       write_vtor
+     77              
+     78              /* Get the addresses for the .data section (initialized data section) */
+     79              uint8* data_ram = __section_begin(".data");
+   \   0000002A   0x....             LDR.N    R2,??DataTable1_2
+     80              uint8* data_rom = __section_begin(".data_init");
+   \   0000002C   0x....             LDR.N    R1,??DataTable1_3
+     81              uint8* data_rom_end = __section_end(".data_init");
+   \   0000002E   0x....             LDR.N    R0,??DataTable1_4
+     82              
+     83              /* Copy initialized data from ROM to RAM */
+     84              n = data_rom_end - data_rom;
+   \   00000030   0x1A43             SUBS     R3,R0,R1
+   \   00000032   0x001C             MOVS     R4,R3
+     85              while (n--)
+   \                     ??common_startup_2:
+   \   00000034   0x0023             MOVS     R3,R4
+   \   00000036   0x1E5C             SUBS     R4,R3,#+1
+   \   00000038   0x2B00             CMP      R3,#+0
+   \   0000003A   0xD004             BEQ.N    ??common_startup_3
+     86                *data_ram++ = *data_rom++;
+   \   0000003C   0x780B             LDRB     R3,[R1, #+0]
+   \   0000003E   0x7013             STRB     R3,[R2, #+0]
+   \   00000040   0x1C49             ADDS     R1,R1,#+1
+   \   00000042   0x1C52             ADDS     R2,R2,#+1
+   \   00000044   0xE7F6             B.N      ??common_startup_2
+     87           
+     88           
+     89              /* Get the addresses for the .bss section (zero-initialized data) */
+     90              uint8* bss_start = __section_begin(".bss");
+   \                     ??common_startup_3:
+   \   00000046   0x....             LDR.N    R5,??DataTable1_5
+     91              uint8* bss_end = __section_end(".bss");
+   \   00000048   0x....             LDR.N    R3,??DataTable1_6
+     92              
+     93              /* Clear the zero-initialized data section */
+     94              n = bss_end - bss_start;
+   \   0000004A   0x1B5E             SUBS     R6,R3,R5
+   \   0000004C   0x0034             MOVS     R4,R6
+     95              while(n--)
+   \                     ??common_startup_4:
+   \   0000004E   0x0026             MOVS     R6,R4
+   \   00000050   0x1E74             SUBS     R4,R6,#+1
+   \   00000052   0x2E00             CMP      R6,#+0
+   \   00000054   0xD003             BEQ.N    ??common_startup_5
+     96                *bss_start++ = 0;    
+   \   00000056   0x2600             MOVS     R6,#+0
+   \   00000058   0x702E             STRB     R6,[R5, #+0]
+   \   0000005A   0x1C6D             ADDS     R5,R5,#+1
+   \   0000005C   0xE7F7             B.N      ??common_startup_4
+     97              
+     98              /* Get addresses for any code sections that need to be copied from ROM to RAM.
+     99               * The IAR tools have a predefined keyword that can be used to mark individual
+    100               * functions for execution from RAM. Add "__ramfunc" before the return type in
+    101               * the function prototype for any routines you need to execute from RAM instead 
+    102               * of ROM. ex: __ramfunc void foo(void);
+    103               */
+    104              uint8* code_relocate_ram = __section_begin("CodeRelocateRam");
+   \                     ??common_startup_5:
+   \   0000005E   0x....             LDR.N    R6,??DataTable1_7
+    105              uint8* code_relocate = __section_begin("CodeRelocate");
+   \   00000060   0x....             LDR.N    R7,??DataTable1_8
+    106              uint8* code_relocate_end = __section_end("CodeRelocate");
+   \   00000062   0x.... 0x....      LDR.W    R12,??DataTable1_9
+    107              
+    108              /* Copy functions from ROM to RAM */
+    109              n = code_relocate_end - code_relocate;
+   \   00000066   0xEBBC 0x0E07      SUBS     LR,R12,R7
+   \   0000006A   0x4674             MOV      R4,LR
+    110              while (n--)
+   \                     ??common_startup_6:
+   \   0000006C   0x46A6             MOV      LR,R4
+   \   0000006E   0xF1BE 0x0401      SUBS     R4,LR,#+1
+   \   00000072   0xF1BE 0x0F00      CMP      LR,#+0
+   \   00000076   0xD006             BEQ.N    ??common_startup_7
+    111                *code_relocate_ram++ = *code_relocate++;
+   \   00000078   0xF897 0xE000      LDRB     LR,[R7, #+0]
+   \   0000007C   0xF886 0xE000      STRB     LR,[R6, #+0]
+   \   00000080   0x1C7F             ADDS     R7,R7,#+1
+   \   00000082   0x1C76             ADDS     R6,R6,#+1
+   \   00000084   0xE7F2             B.N      ??common_startup_6
+    112          }
+   \                     ??common_startup_7:
+   \   00000086   0xBDF1             POP      {R0,R4-R7,PC}    ;; return
+    113          
+    114          
+    115          //-------------------------------------------------------------------------*
+    116          //函数名: trace_clk_init                                                   *
+    117          //功  能: 跟踪时钟初始化                                                   * 
+    118          //参  数: 无							  	   *	
+    119          //返  回: 无                                                               *
+    120          //说  明: 用于调试                                                         *
+    121          //-------------------------------------------------------------------------*
+
+   \                                 In section .text, align 2, keep-with-next
+    122          void trace_clk_init(void)
+    123          {
+    124              //设置跟踪时钟为内核时钟
+    125              SIM_SOPT2 |= SIM_SOPT2_TRACECLKSEL_MASK;	
+   \                     trace_clk_init:
+   \   00000000   0x....             LDR.N    R0,??DataTable1_10  ;; 0x40048004
+   \   00000002   0x6800             LDR      R0,[R0, #+0]
+   \   00000004   0xF450 0x5080      ORRS     R0,R0,#0x1000
+   \   00000008   0x....             LDR.N    R1,??DataTable1_10  ;; 0x40048004
+   \   0000000A   0x6008             STR      R0,[R1, #+0]
+    126              //在PTA6引脚上使能TRACE_CLKOU功能
+    127              PORTA_PCR6 = ( PORT_PCR_MUX(0x7));
+   \   0000000C   0x....             LDR.N    R0,??DataTable1_11  ;; 0x40049018
+   \   0000000E   0xF44F 0x61E0      MOV      R1,#+1792
+   \   00000012   0x6001             STR      R1,[R0, #+0]
+    128          }
+   \   00000014   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   0x........         DC32     __VECTOR_RAM
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_1:
+   \   00000000   0x........         DC32     __VECTOR_TABLE
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_2:
+   \   00000000   0x........         DC32     SFB(`.data`)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_3:
+   \   00000000   0x........         DC32     SFB(`.data_init`)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_4:
+   \   00000000   0x........         DC32     SFE(`.data_init`)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_5:
+   \   00000000   0x........         DC32     SFB(`.bss`)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_6:
+   \   00000000   0x........         DC32     SFE(`.bss`)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_7:
+   \   00000000   0x........         DC32     SFB(CodeRelocateRam)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_8:
+   \   00000000   0x........         DC32     SFB(CodeRelocate)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_9:
+   \   00000000   0x........         DC32     SFE(CodeRelocate)
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_10:
+   \   00000000   0x40048004         DC32     0x40048004
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_11:
+   \   00000000   0x40049018         DC32     0x40049018
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       24  common_startup
+             24 -> write_vtor
+        8  start
+              8 -> common_startup
+              8 -> main
+              8 -> pll_init
+              8 -> trace_clk_init
+              8 -> wdog_disable
+        0  trace_clk_init
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+       4  ??DataTable1_10
+       4  ??DataTable1_11
+       4  ??DataTable1_2
+       4  ??DataTable1_3
+       4  ??DataTable1_4
+       4  ??DataTable1_5
+       4  ??DataTable1_6
+       4  ??DataTable1_7
+       4  ??DataTable1_8
+       4  ??DataTable1_9
+     136  common_startup
+      24  start
+      22  trace_clk_init
+
+ 
+ 230 bytes in section .text
+ 
+ 230 bytes of CODE memory
+
+Errors: none
+Warnings: none

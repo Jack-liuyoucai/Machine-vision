@@ -1,0 +1,264 @@
+###############################################################################
+#                                                                             #
+#                                                       27/Apr/2013  13:44:41 #
+# IAR ANSI C/C++ Compiler V6.30.4.23288/W32 EVALUATION for ARM                #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送      #
+#                    接受 像素处理  死机\src\Sources\Drivers\PIT\PIT.c        #
+#    Command line =  "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\PIT\PIT.c" -lCN  #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\RAM\List\" -lB                       #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\RAM\List\" -o                        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\RAM\Obj\" --no_cse --no_unroll       #
+#                    --no_inline --no_code_motion --no_tbaa --no_clustering   #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M4  #
+#                    -e --fpu=None --dlib_config "D:\Program Files\IAR        #
+#                    Systems\Embedded Workbench 6.0                           #
+#                    Evaluation\arm\INC\c\DLib_Config_Normal.h" -I            #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Cpu\" -I                 #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\App\" -I                 #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\adc\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\delay\" -I       #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\FTM\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\gpio\" -I        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\lptmr\" -I       #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\mcg\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\PIT\" -I         #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\uart\" -I        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\oled\" -I        #
+#                    "C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送     #
+#                    接受 像素处理  死机\src\Sources\Drivers\spi\" -On        #
+#                    --use_c++_inline                                         #
+#    List file    =  C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送      #
+#                    接受 像素处理  死机\RAM\List\PIT.lst                     #
+#    Object file  =  C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送      #
+#                    接受 像素处理  死机\RAM\Obj\PIT.o                        #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\Administrator\Desktop\4.25屏幕 下位机 发送 接受 像素处理  死机\src\Sources\Drivers\PIT\PIT.c
+      1          /******************** (C) COPYRIGHT 2011      ********************
+      2           * 文件名       ：PIT.c
+      3           * 描述         ：PIT周期中断计时器，定时中断
+      4           * 备注         ：
+      5           *
+      6                                                         
+      7          **********************************************************************************/
+      8          
+      9          
+     10          #include "common.h"
+     11          #include  "PIT.h"     //周期中断计时器
+     12          
+     13          /*************************************************************************
+     14          *                                 
+     15          *
+     16          *  函数名称：pit_init
+     17          *  功能说明：PITn定时中断
+     18          *  参数说明：PITn        模块号（PIT0~PIT3）
+     19                       cnt         延时时间(单位为bus时钟周期)
+     20          *  函数返回：无
+     21          *  修改时间：2012-1-24
+     22          *  备    注：
+     23          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+     24          void pit_init(PITn pitn, uint32 cnt)
+     25          {
+   \                     pit_init:
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0x000D             MOVS     R5,R1
+     26              //PIT 用的是 Bus Clock 总线频率
+     27              //溢出计数 = 总线频率 * 时间
+     28          
+     29              /* 开启时钟*/
+     30              SIM_SCGC6       |= SIM_SCGC6_PIT_MASK;                            //使能PIT时钟
+   \   00000006   0x....             LDR.N    R0,??DataTable1  ;; 0x4004803c
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0xF450 0x0000      ORRS     R0,R0,#0x800000
+   \   0000000E   0x....             LDR.N    R1,??DataTable1  ;; 0x4004803c
+   \   00000010   0x6008             STR      R0,[R1, #+0]
+     31          
+     32              /* PIT模块控制 PIT Module Control Register (PIT_MCR) */
+     33              PIT_MCR         &= ~(PIT_MCR_MDIS_MASK | PIT_MCR_FRZ_MASK );      //使能PIT定时器时钟 ，调试模式下继续运行
+   \   00000012   0x....             LDR.N    R0,??DataTable1_1  ;; 0x40037000
+   \   00000014   0x6800             LDR      R0,[R0, #+0]
+   \   00000016   0x0880             LSRS     R0,R0,#+2
+   \   00000018   0x0080             LSLS     R0,R0,#+2
+   \   0000001A   0x....             LDR.N    R1,??DataTable1_1  ;; 0x40037000
+   \   0000001C   0x6008             STR      R0,[R1, #+0]
+     34          
+     35              /* 定时器加载值设置 Timer Load Value Register (PIT_LDVALn) */
+     36              PIT_LDVAL(pitn)  = cnt;                                          //设置溢出中断时间
+   \   0000001E   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000020   0x0120             LSLS     R0,R4,#+4
+   \   00000022   0x....             LDR.N    R1,??DataTable1_2  ;; 0x40037100
+   \   00000024   0x5045             STR      R5,[R0, R1]
+     37          
+     38              //定时时间到了后，TIF 置 1 。写1的时候就会清0
+     39              PIT_Flag_Clear(pitn);                                             //清中断标志位
+   \   00000026   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000028   0x....             LDR.N    R0,??DataTable1_2  ;; 0x40037100
+   \   0000002A   0xEB10 0x1004      ADDS     R0,R0,R4, LSL #+4
+   \   0000002E   0x68C0             LDR      R0,[R0, #+12]
+   \   00000030   0xF050 0x0001      ORRS     R0,R0,#0x1
+   \   00000034   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000036   0x....             LDR.N    R1,??DataTable1_2  ;; 0x40037100
+   \   00000038   0xEB11 0x1104      ADDS     R1,R1,R4, LSL #+4
+   \   0000003C   0x60C8             STR      R0,[R1, #+12]
+     40          
+     41              /* 定时器控制寄存器 Timer Control Register (PIT_TCTRL0) */
+     42              PIT_TCTRL(pitn) |= ( PIT_TCTRL_TEN_MASK | PIT_TCTRL_TIE_MASK );   //使能 PITn定时器,并开PITn中断
+   \   0000003E   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000040   0x....             LDR.N    R0,??DataTable1_2  ;; 0x40037100
+   \   00000042   0xEB10 0x1004      ADDS     R0,R0,R4, LSL #+4
+   \   00000046   0x6880             LDR      R0,[R0, #+8]
+   \   00000048   0xF050 0x0003      ORRS     R0,R0,#0x3
+   \   0000004C   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   0000004E   0x....             LDR.N    R1,??DataTable1_2  ;; 0x40037100
+   \   00000050   0xEB11 0x1104      ADDS     R1,R1,R4, LSL #+4
+   \   00000054   0x6088             STR      R0,[R1, #+8]
+     43          
+     44              enable_irq(pitn + 68);			                                //开接收引脚的IRQ中断
+   \   00000056   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000058   0xF114 0x0044      ADDS     R0,R4,#+68
+   \   0000005C   0x.... 0x....      BL       enable_irq
+     45          }
+   \   00000060   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+     46          
+     47          
+     48          /*************************************************************************
+     49          *                                 
+     50          *
+     51          *  函数名称：pit_init
+     52          *  功能说明：PITn定时中断
+     53          *  参数说明：PITn        模块号（PIT0~PIT3）
+     54                       cnt         延时时间(单位为bus时钟周期)
+     55          *  函数返回：无
+     56          *  修改时间：2012-1-24
+     57          *  备    注：
+     58          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+     59          void pit_dma_init(PITn pitn, uint32 cnt)
+     60          {
+   \                     pit_dma_init:
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0x000D             MOVS     R5,R1
+     61              //PIT 用的是 Bus Clock 总线频率
+     62              //溢出计数 = 总线频率 * 时间
+     63          
+     64              /* 开启时钟*/
+     65              SIM_SCGC6       |= SIM_SCGC6_PIT_MASK;                            //使能PIT时钟
+   \   00000006   0x....             LDR.N    R0,??DataTable1  ;; 0x4004803c
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0xF450 0x0000      ORRS     R0,R0,#0x800000
+   \   0000000E   0x....             LDR.N    R1,??DataTable1  ;; 0x4004803c
+   \   00000010   0x6008             STR      R0,[R1, #+0]
+     66          
+     67              /* PIT模块控制 PIT Module Control Register (PIT_MCR) */
+     68              //PIT_MCR         &=~(PIT_MCR_MDIS_MASK | PIT_MCR_FRZ_MASK );       //使能PIT定时器时钟 ，调试模式下继续运行
+     69              PIT_MCR = 0;
+   \   00000012   0x....             LDR.N    R0,??DataTable1_1  ;; 0x40037000
+   \   00000014   0x2100             MOVS     R1,#+0
+   \   00000016   0x6001             STR      R1,[R0, #+0]
+     70          
+     71              /* 定时器加载值设置 Timer Load Value Register (PIT_LDVALn) */
+     72              PIT_LDVAL(pitn)  = cnt;                                          //设置溢出中断时间
+   \   00000018   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   0000001A   0x0120             LSLS     R0,R4,#+4
+   \   0000001C   0x....             LDR.N    R1,??DataTable1_2  ;; 0x40037100
+   \   0000001E   0x5045             STR      R5,[R0, R1]
+     73          
+     74              //定时时间到了后，TIF 置 1 。写1的时候就会清0
+     75              PIT_Flag_Clear(pitn);                                             //清中断标志位
+   \   00000020   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000022   0x....             LDR.N    R0,??DataTable1_2  ;; 0x40037100
+   \   00000024   0xEB10 0x1004      ADDS     R0,R0,R4, LSL #+4
+   \   00000028   0x68C0             LDR      R0,[R0, #+12]
+   \   0000002A   0xF050 0x0001      ORRS     R0,R0,#0x1
+   \   0000002E   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000030   0x....             LDR.N    R1,??DataTable1_2  ;; 0x40037100
+   \   00000032   0xEB11 0x1104      ADDS     R1,R1,R4, LSL #+4
+   \   00000036   0x60C8             STR      R0,[R1, #+12]
+     76          
+     77              /* 定时器控制寄存器 Timer Control Register (PIT_TCTRL0) */
+     78              PIT_TCTRL(pitn) |= (0
+     79                                  | PIT_TCTRL_TEN_MASK  //使能 PITn定时器
+     80                                  | PIT_TCTRL_TIE_MASK  //开PITn中断
+     81                                 );
+   \   00000038   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   0000003A   0x....             LDR.N    R0,??DataTable1_2  ;; 0x40037100
+   \   0000003C   0xEB10 0x1004      ADDS     R0,R0,R4, LSL #+4
+   \   00000040   0x6880             LDR      R0,[R0, #+8]
+   \   00000042   0xF050 0x0003      ORRS     R0,R0,#0x3
+   \   00000046   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000048   0x....             LDR.N    R1,??DataTable1_2  ;; 0x40037100
+   \   0000004A   0xEB11 0x1104      ADDS     R1,R1,R4, LSL #+4
+   \   0000004E   0x6088             STR      R0,[R1, #+8]
+     82          
+     83              enable_irq(pitn + 68);			                                //开接收引脚的IRQ中断
+   \   00000050   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000052   0xF114 0x0044      ADDS     R0,R4,#+68
+   \   00000056   0x.... 0x....      BL       enable_irq
+     84          }
+   \   0000005A   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   0x4004803C         DC32     0x4004803c
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_1:
+   \   00000000   0x40037000         DC32     0x40037000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_2:
+   \   00000000   0x40037100         DC32     0x40037100
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       16  pit_dma_init
+             16 -> enable_irq
+       16  pit_init
+             16 -> enable_irq
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+       4  ??DataTable1_2
+      92  pit_dma_init
+      98  pit_init
+
+ 
+ 202 bytes in section .text
+ 
+ 202 bytes of CODE memory
+
+Errors: none
+Warnings: none

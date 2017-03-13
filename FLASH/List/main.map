@@ -1,0 +1,740 @@
+###############################################################################
+#
+# IAR ELF Linker V7.20.1.7305/W32 for ARM                 14/Jul/2014  22:11:56
+# Copyright 2007-2014 IAR Systems AB.
+#
+#    Output file  =  
+#        F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Exe\main.out
+#    Map file     =  
+#        F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\List\main.map
+#    Command line =  
+#        "F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\adc.o"
+#        "F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12
+#        ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\common.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\crt0.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\delay.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\dma.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\FTM.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\gpio.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\main.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\mcg.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\oled.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\PIT.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\start.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\uart.o" "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\vectors.o"
+#        "F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj\wdog.o"
+#        --redirect _Printf=_PrintfFull --redirect _Scanf=_ScanfFull -o
+#        "F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12
+#        ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Exe\main.out" --map "F:\¡ı”—≤≈
+#        (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\List\main.map" --config
+#        "F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12
+#        ÕÌ¡˘µ„£ª‘»ÀŸ\src\Settings\Link\Pflash.icf" --semihosting --entry
+#        __iar_program_start --vfe
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A1":  place at 0x00000000 { ro section .intvec };
+"A2":  place at 0x00000410 { ro section .noinit };
+"P1":  place in [from 0x00000000 to 0x00080000] { ro, block CodeRelocate };
+"P2":  place in [from 0x1fff0410 to 0x20010000] {
+          rw, block CodeRelocateRam, block CSTACK, block HEAP };
+
+  Section              Kind        Address    Size  Object
+  -------              ----        -------    ----  ------
+"A1":                                        0x410
+  .intvec              const    0x00000000   0x410  vectors.o [1]
+                              - 0x00000410   0x410
+
+"P1", part 1 of 2:                             0x0
+  .rodata              const    0x00000410     0x0  zero_init3.o [5]
+  CodeRelocate                  0x00000410     0x0  <Block>
+
+"A2":                                         0x3c
+  .noinit              ro code  0x00000410    0x3c  crt0.o [1]
+                              - 0x0000044c    0x3c
+
+"P1", part 2 of 2:                          0x8a3c
+  .text                ro code  0x0000044c  0x5634  main.o [1]
+  .text                ro code  0x00005a80    0xe8  gpio.o [1]
+  .text                ro code  0x00005b68   0x3ea  adc.o [1]
+  .text                ro code  0x00005f52    0x22  zero_init3.o [5]
+  .text                ro code  0x00005f74    0x4e  FltToDbl.o [4]
+  .text                ro code  0x00005fc2     0x2  vectors.o [1]
+  .text                ro code  0x00005fc4   0x1a2  DblMul.o [4]
+  .text                ro code  0x00006168    0xe8  DblAdd.o [4]
+  .text                ro code  0x00006250    0x90  DblToFlt.o [4]
+  .text                ro code  0x000062e0   0x246  DblDiv.o [4]
+  .text                ro code  0x00006528    0x32  I32ToFlt.o [4]
+  .text                ro code  0x0000655c    0x24  FltCmpLe.o [4]
+  .text                ro code  0x00006580    0xe6  FltSub.o [4]
+  .text                ro code  0x00006668    0xfc  FltDiv.o [4]
+  .text                ro code  0x00006764    0x24  FltCmpGe.o [4]
+  .text                ro code  0x00006788    0xf6  asin.o [4]
+  .text                ro code  0x00006880    0x84  FltAdd.o [4]
+  .text                ro code  0x00006904    0xd8  FltMul.o [4]
+  .text                ro code  0x000069dc    0x44  FltToS32.o [4]
+  .text                ro code  0x00006a20    0x2c  I32ToDbl.o [4]
+  .text                ro code  0x00006a4c    0x20  delay.o [1]
+  .text                ro code  0x00006a6c  0x1620  oled.o [1]
+  .text                ro code  0x0000808c   0x200  FTM.o [1]
+  .text                ro code  0x0000828c    0xb4  common.o [1]
+  .text                ro code  0x00008340   0x180  DblSub.o [4]
+  .text                ro code  0x000084c0    0x2e  DblCmpLe.o [4]
+  .text                ro code  0x000084f0    0xf0  sqrt.o [4]
+  .rodata              const    0x000085e0     0xc  oled.o [1]
+  .text                ro code  0x000085f0   0x1e0  xatan.o [4]
+  .text                ro code  0x000087d0     0xc  errno.o [3]
+  .text                ro code  0x000087dc     0xc  iarEdom.o [5]
+  .text                ro code  0x000087e8    0x2e  DblCmpGe.o [4]
+  .text                ro code  0x00008816     0x2  xtls.o [3]
+  .rodata              const    0x00008818   0x228  oled.o [1]
+  .text                ro code  0x00008a40   0x104  mcg.o [1]
+  .text                ro code  0x00008b44    0xe8  start.o [1]
+  .text                ro code  0x00008c2c    0x38  wdog.o [1]
+  .data_init                    0x00008c64    0xc0  <Block>
+    Initializer bytes  ro data  0x00008c64    0xc0  <for .data-1>
+  .text                ro code  0x00008d24    0x28  data_init.o [5]
+  .iar.init_table      const    0x00008d4c    0x10  - Linker created -
+  .text                ro code  0x00008d5c    0x1a  cmain.o [5]
+  .text                ro code  0x00008d76     0x4  low_level_init.o [3]
+  .text                ro code  0x00008d7a     0x4  exit.o [3]
+  .text                ro code  0x00008d80     0xa  cexit.o [5]
+  .text                ro code  0x00008d8c    0x14  exit.o [6]
+  .rodata              const    0x00008da0     0xc  oled.o [1]
+  .rodata              const    0x00008dac     0xc  oled.o [1]
+  .text                ro code  0x00008db8     0xc  cstartup_M.o [5]
+  .rodata              const    0x00008dc4     0x8  oled.o [1]
+  .rodata              const    0x00008dcc     0x8  oled.o [1]
+  .rodata              const    0x00008dd4     0x8  oled.o [1]
+  .rodata              const    0x00008ddc     0x8  oled.o [1]
+  .rodata              const    0x00008de4     0x8  oled.o [1]
+  .rodata              const    0x00008dec     0x8  oled.o [1]
+  .rodata              const    0x00008df4     0x8  oled.o [1]
+  .rodata              const    0x00008dfc     0x8  oled.o [1]
+  .rodata              const    0x00008e04     0x8  oled.o [1]
+  .rodata              const    0x00008e0c     0x8  oled.o [1]
+  .rodata              const    0x00008e14     0x8  oled.o [1]
+  .rodata              const    0x00008e1c     0x8  oled.o [1]
+  .rodata              const    0x00008e24     0x8  oled.o [1]
+  .rodata              const    0x00008e2c     0x8  oled.o [1]
+  .rodata              const    0x00008e34     0x8  oled.o [1]
+  .rodata              const    0x00008e3c     0x8  oled.o [1]
+  .rodata              const    0x00008e44     0x8  oled.o [1]
+  .rodata              const    0x00008e4c     0x8  oled.o [1]
+  .rodata              const    0x00008e54     0x8  oled.o [1]
+  .rodata              const    0x00008e5c     0x8  oled.o [1]
+  .rodata              const    0x00008e64     0x8  oled.o [1]
+  .rodata              const    0x00008e6c     0x8  oled.o [1]
+  .rodata              const    0x00008e74     0x8  oled.o [1]
+  .rodata              const    0x00008e7c     0x8  oled.o [1]
+  Initializer bytes    ro data  0x00008e84     0x4  <for P2 s0>
+                              - 0x00008e88  0x8a3c
+
+"P2":                                       0x3ff0
+  .data                         0x1fff0410    0xc0  <Block>
+    .data-1                     0x1fff0410    0xc0  <Init block>
+      .data            inited   0x1fff0410     0x8  adc.o [1]
+      .data            inited   0x1fff0418    0x14  gpio.o [1]
+      .data            inited   0x1fff042c    0x14  gpio.o [1]
+      .data            inited   0x1fff0440     0x2  main.o [1]
+      .data            inited   0x1fff0442     0x2  main.o [1]
+      .data            inited   0x1fff0444     0x4  main.o [1]
+      .data            inited   0x1fff0448     0x4  main.o [1]
+      .data            inited   0x1fff044c     0x4  main.o [1]
+      .data            inited   0x1fff0450     0x4  main.o [1]
+      .data            inited   0x1fff0454     0x4  main.o [1]
+      .data            inited   0x1fff0458     0x4  main.o [1]
+      .data            inited   0x1fff045c     0x4  main.o [1]
+      .data            inited   0x1fff0460     0x4  main.o [1]
+      .data            inited   0x1fff0464     0x4  main.o [1]
+      .data            inited   0x1fff0468     0x4  main.o [1]
+      .data            inited   0x1fff046c     0x2  main.o [1]
+      .data            inited   0x1fff046e     0x2  main.o [1]
+      .data            inited   0x1fff0470     0x2  main.o [1]
+      .data            inited   0x1fff0472     0x2  main.o [1]
+      .data            inited   0x1fff0474     0x2  main.o [1]
+      .data            inited   0x1fff0476     0x2  main.o [1]
+      .data            inited   0x1fff0478     0x1  main.o [1]
+      .data            inited   0x1fff0479     0x1  main.o [1]
+      .data            inited   0x1fff047a     0x1  main.o [1]
+      .data            inited   0x1fff047b     0x1  main.o [1]
+      .data            inited   0x1fff047c     0x1  main.o [1]
+      .data            inited   0x1fff047d     0x1  main.o [1]
+      .data            inited   0x1fff0480    0x34  main.o [1]
+      .data            inited   0x1fff04b4     0x1  main.o [1]
+      .data            inited   0x1fff04b5     0x1  main.o [1]
+      .data            inited   0x1fff04b6     0x1  main.o [1]
+      .data            inited   0x1fff04b7     0x1  main.o [1]
+      .data            inited   0x1fff04b8     0x1  main.o [1]
+      .data            inited   0x1fff04b9     0x1  main.o [1]
+      .data            inited   0x1fff04ba     0x1  main.o [1]
+      .data            inited   0x1fff04bb     0x1  main.o [1]
+      .data            inited   0x1fff04bc     0x2  main.o [1]
+      .data            inited   0x1fff04be     0x1  main.o [1]
+      .data            inited   0x1fff04bf     0x1  main.o [1]
+      .data            inited   0x1fff04c0     0x2  main.o [1]
+      .data            inited   0x1fff04c2     0x2  main.o [1]
+      .data            inited   0x1fff04c4     0x4  main.o [1]
+      .data            inited   0x1fff04c8     0x1  main.o [1]
+      .data            inited   0x1fff04c9     0x1  main.o [1]
+      .data            inited   0x1fff04ca     0x2  main.o [1]
+      .data            inited   0x1fff04cc     0x2  main.o [1]
+      .data            inited   0x1fff04ce     0x2  main.o [1]
+  .bss                          0x1fff04d0  0x3f2c  <Block>
+    .bss               zero     0x1fff04d0    0x10  adc.o [1]
+    .bss               zero     0x1fff04e0     0x4  main.o [1]
+    .bss               zero     0x1fff04e4     0x4  main.o [1]
+    .bss               zero     0x1fff04e8     0x4  main.o [1]
+    .bss               zero     0x1fff04ec     0x4  main.o [1]
+    .bss               zero     0x1fff04f0     0x4  main.o [1]
+    .bss               zero     0x1fff04f4     0x4  main.o [1]
+    .bss               zero     0x1fff04f8     0x8  main.o [1]
+    .bss               zero     0x1fff0500     0x4  main.o [1]
+    .bss               zero     0x1fff0504     0x4  main.o [1]
+    .bss               zero     0x1fff0508     0x4  main.o [1]
+    .bss               zero     0x1fff050c     0x4  main.o [1]
+    .bss               zero     0x1fff0510     0x4  main.o [1]
+    .bss               zero     0x1fff0514     0x4  main.o [1]
+    .bss               zero     0x1fff0518     0x4  main.o [1]
+    .bss               zero     0x1fff051c     0x4  main.o [1]
+    .bss               zero     0x1fff0520     0x4  main.o [1]
+    .bss               zero     0x1fff0524     0x4  main.o [1]
+    .bss               zero     0x1fff0528     0x4  main.o [1]
+    .bss               zero     0x1fff052c     0x4  main.o [1]
+    .bss               zero     0x1fff0530     0x4  main.o [1]
+    .bss               zero     0x1fff0534  0x1eac  main.o [1]
+    .bss               zero     0x1fff23e0  0x1eac  main.o [1]
+    .bss               zero     0x1fff428c    0x34  main.o [1]
+    .bss               zero     0x1fff42c0    0x34  main.o [1]
+    .bss               zero     0x1fff42f4    0x34  main.o [1]
+    .bss               zero     0x1fff4328    0x34  main.o [1]
+    .bss               zero     0x1fff435c     0x4  main.o [1]
+    .bss               zero     0x1fff4360     0x4  main.o [1]
+    .bss               zero     0x1fff4364     0xc  main.o [1]
+    .bss               zero     0x1fff4370     0x4  main.o [1]
+    .bss               zero     0x1fff4374     0x4  main.o [1]
+    .bss               zero     0x1fff4378     0x4  main.o [1]
+    .bss               zero     0x1fff437c     0x2  main.o [1]
+    .bss               zero     0x1fff437e     0x2  main.o [1]
+    .bss               zero     0x1fff4380     0x2  main.o [1]
+    .bss               zero     0x1fff4382     0x2  main.o [1]
+    .bss               zero     0x1fff4384     0x2  main.o [1]
+    .bss               zero     0x1fff4386     0x2  main.o [1]
+    .bss               zero     0x1fff4388     0x2  main.o [1]
+    .bss               zero     0x1fff438a     0x2  main.o [1]
+    .bss               zero     0x1fff438c     0x2  main.o [1]
+    .bss               zero     0x1fff438e     0x2  main.o [1]
+    .bss               zero     0x1fff4390     0x2  main.o [1]
+    .bss               zero     0x1fff4392     0x2  main.o [1]
+    .bss               zero     0x1fff4394     0x2  main.o [1]
+    .bss               zero     0x1fff4396     0x2  main.o [1]
+    .bss               zero     0x1fff4398     0x2  main.o [1]
+    .bss               zero     0x1fff439a     0x2  main.o [1]
+    .bss               zero     0x1fff439c     0x2  main.o [1]
+    .bss               zero     0x1fff439e     0x2  main.o [1]
+    .bss               zero     0x1fff43a0     0x2  main.o [1]
+    .bss               zero     0x1fff43a2     0x2  main.o [1]
+    .bss               zero     0x1fff43a4     0x2  main.o [1]
+    .bss               zero     0x1fff43a6     0x2  main.o [1]
+    .bss               zero     0x1fff43a8     0x2  main.o [1]
+    .bss               zero     0x1fff43aa     0x2  main.o [1]
+    .bss               zero     0x1fff43ac     0x2  main.o [1]
+    .bss               zero     0x1fff43ae     0x2  main.o [1]
+    .bss               zero     0x1fff43b0     0x2  main.o [1]
+    .bss               zero     0x1fff43b2     0x2  main.o [1]
+    .bss               zero     0x1fff43b4     0x2  main.o [1]
+    .bss               zero     0x1fff43b6     0x2  main.o [1]
+    .bss               zero     0x1fff43b8     0x2  main.o [1]
+    .bss               zero     0x1fff43ba     0x2  main.o [1]
+    .bss               zero     0x1fff43bc     0x2  main.o [1]
+    .bss               zero     0x1fff43be     0x2  main.o [1]
+    .bss               zero     0x1fff43c0     0x2  main.o [1]
+    .bss               zero     0x1fff43c2     0x2  main.o [1]
+    .bss               zero     0x1fff43c4     0x2  main.o [1]
+    .bss               zero     0x1fff43c6     0x2  main.o [1]
+    .bss               zero     0x1fff43c8     0x1  main.o [1]
+    .bss               zero     0x1fff43c9     0x1  main.o [1]
+    .bss               zero     0x1fff43ca     0x1  main.o [1]
+    .bss               zero     0x1fff43cb     0x1  main.o [1]
+    .bss               zero     0x1fff43cc     0x1  main.o [1]
+    .bss               zero     0x1fff43cd     0x1  main.o [1]
+    .bss               zero     0x1fff43ce     0x1  main.o [1]
+    .bss               zero     0x1fff43cf     0x1  main.o [1]
+    .bss               zero     0x1fff43d0     0x1  main.o [1]
+    .bss               zero     0x1fff43d1     0x1  main.o [1]
+    .bss               zero     0x1fff43d2     0x1  main.o [1]
+    .bss               zero     0x1fff43d3     0x1  main.o [1]
+    .bss               zero     0x1fff43d4     0x1  main.o [1]
+    .bss               zero     0x1fff43d5     0x1  main.o [1]
+    .bss               zero     0x1fff43d6     0x1  main.o [1]
+    .bss               zero     0x1fff43d7     0x1  main.o [1]
+    .bss               zero     0x1fff43d8     0x1  main.o [1]
+    .bss               zero     0x1fff43d9     0x1  main.o [1]
+    .bss               zero     0x1fff43da     0x1  main.o [1]
+    .bss               zero     0x1fff43db     0x1  main.o [1]
+    .bss               zero     0x1fff43dc     0x1  main.o [1]
+    .bss               zero     0x1fff43dd     0x1  main.o [1]
+    .bss               zero     0x1fff43de     0x1  main.o [1]
+    .bss               zero     0x1fff43df     0x1  main.o [1]
+    .bss               zero     0x1fff43e0     0x1  main.o [1]
+    .bss               zero     0x1fff43e1     0x1  main.o [1]
+    .bss               zero     0x1fff43e2     0x1  main.o [1]
+    .bss               zero     0x1fff43e3     0x1  main.o [1]
+    .bss               zero     0x1fff43e4     0x1  main.o [1]
+    .bss               zero     0x1fff43e5     0x1  main.o [1]
+    .bss               zero     0x1fff43e6     0x1  main.o [1]
+    .bss               zero     0x1fff43e7     0x1  main.o [1]
+    .bss               zero     0x1fff43e8     0x1  main.o [1]
+    .bss               zero     0x1fff43e9     0x1  main.o [1]
+    .bss               zero     0x1fff43ea     0x1  main.o [1]
+    .bss               zero     0x1fff43eb     0x1  main.o [1]
+    .bss               zero     0x1fff43ec     0x1  main.o [1]
+    .bss               zero     0x1fff43ed     0x1  main.o [1]
+    .bss               zero     0x1fff43ee     0x1  main.o [1]
+    .bss               zero     0x1fff43ef     0x1  main.o [1]
+    .bss               zero     0x1fff43f0     0x1  main.o [1]
+    .bss               zero     0x1fff43f1     0x1  main.o [1]
+    .bss               zero     0x1fff43f2     0x1  main.o [1]
+    .bss               zero     0x1fff43f3     0x1  main.o [1]
+    .bss               zero     0x1fff43f4     0x1  main.o [1]
+    .bss               zero     0x1fff43f5     0x1  main.o [1]
+    .bss               zero     0x1fff43f6     0x1  main.o [1]
+    .bss               zero     0x1fff43f7     0x1  main.o [1]
+    .bss               zero     0x1fff43f8     0x1  oled.o [1]
+    .bss               zero     0x1fff43f9     0x1  oled.o [1]
+  CodeRelocateRam               0x1fff43fc     0x0  <Block>
+  P2 s0                         0x1fff43fc     0x4  <Init block>
+    __DLIB_PERTHREAD   inited   0x1fff43fc     0x4  errno.o [3]
+                              - 0x1fff4400  0x3ff0
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address     Size
+          -------     ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x3f2a:
+          0x1fff04d0  0x3f2a
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module            ro code  ro data  rw data
+    ------            -------  -------  -------
+F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj: [1]
+    FTM.o                 512
+    adc.o               1 002        8       24
+    common.o              180
+    crt0.o                 60
+    delay.o                32
+    gpio.o                232       40       40
+    main.o             22 068      144   16 294
+    mcg.o                 260
+    oled.o              5 664      780        2
+    start.o               232
+    vectors.o               2    1 040
+    wdog.o                 56
+    -------------------------------------------
+    Total:             30 300    2 012   16 360
+
+command line: [2]
+    -------------------------------------------
+    Total:
+
+dl7M_tln.a: [3]
+    errno.o                12        4        4
+    exit.o                  4
+    low_level_init.o        4
+    xtls.o                  2
+    -------------------------------------------
+    Total:                 22        4        4
+
+m7M_tl.a: [4]
+    DblAdd.o              232
+    DblCmpGe.o             46
+    DblCmpLe.o             46
+    DblDiv.o              582
+    DblMul.o              418
+    DblSub.o              384
+    DblToFlt.o            144
+    FltAdd.o              132
+    FltCmpGe.o             36
+    FltCmpLe.o             36
+    FltDiv.o              252
+    FltMul.o              216
+    FltSub.o              230
+    FltToDbl.o             78
+    FltToS32.o             68
+    I32ToDbl.o             44
+    I32ToFlt.o             50
+    asin.o                246
+    sqrt.o                240
+    xatan.o               480
+    -------------------------------------------
+    Total:              3 960
+
+rt7M_tl.a: [5]
+    cexit.o                10
+    cmain.o                26
+    cstartup_M.o           12
+    data_init.o            40
+    iarEdom.o              12
+    zero_init3.o           34
+    -------------------------------------------
+    Total:                134
+
+shb_l.a: [6]
+    exit.o                 20
+    -------------------------------------------
+    Total:                 20
+
+    Gaps                   20                 2
+    Linker created                  16
+-----------------------------------------------
+    Grand Total:       34 456    2 032   16 366
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                      Address    Size  Type      Object
+-----                      -------    ----  ----      ------
+.bss$$Base              0x1fff04d0           --   Gb  - Linker created -
+.bss$$Limit             0x1fff43fc           --   Gb  - Linker created -
+.data$$Base             0x1fff0410           --   Gb  - Linker created -
+.data$$Limit            0x1fff04d0           --   Gb  - Linker created -
+.data_init$$Base        0x00008c64           --   Gb  - Linker created -
+.data_init$$Limit       0x00008d24           --   Gb  - Linker created -
+?main                   0x00008d5d          Code  Gb  cmain.o [5]
+ACCE_STATIC             0x1fff0448     0x4  Data  Gb  main.o [1]
+ADCx                    0x1fff0410     0x8  Data  Gb  adc.o [1]
+AD_AngleData            0x1fff04f8     0x8  Data  Gb  main.o [1]
+AcceData                0x1fff4364     0xc  Data  Gb  main.o [1]
+BASE_OT                 0x1fff04b5     0x1  Data  Gb  main.o [1]
+CarAngleAdjust          0x0000458b    0x84  Code  Gb  main.o [1]
+CarControlOut           0x000047eb   0x1f8  Code  Gb  main.o [1]
+CodeRelocate$$Base      0x00000410           --   Gb  - Linker created -
+CodeRelocate$$Limit     0x00000410           --   Gb  - Linker created -
+CodeRelocateRam$$Base   0x1fff43fc           --   Gb  - Linker created -
+CodeRelocateRam$$Limit  0x1fff43fc           --   Gb  - Linker created -
+Control                 0x00002f2d   0x602  Code  Gb  main.o [1]
+Deal_BlackEdge          0x00001b81   0x784  Code  Gb  main.o [1]
+Delay_MS                0x0000044d     0xa  Code  Gb  main.o [1]
+EXIT_Init               0x00000457    0x4c  Code  Gb  main.o [1]
+F6x8                    0x00008818   0x228  Data  Gb  oled.o [1]
+FTM_PWM_init            0x0000808d    0xae  Code  Gb  FTM.o [1]
+FTM_QUAD_init           0x0000813b    0xce  Code  Gb  FTM.o [1]
+FantingOut              0x00004f0d    0x34  Code  Gb  main.o [1]
+GIPO_init               0x000004f3    0xc6  Code  Gb  main.o [1]
+GPIOx                   0x1fff0418    0x14  Data  Gb  gpio.o [1]
+GYRO_STATIC             0x1fff04f4     0x4  Data  Gb  main.o [1]
+GetADValue              0x000042bd    0x5a  Code  Gb  main.o [1]
+GetAngle                0x00004321   0x26a  Code  Gb  main.o [1]
+GetPower                0x00004273    0x44  Code  Gb  main.o [1]
+ImageReady              0x1fff43cb     0x1  Data  Gb  main.o [1]
+Initial                 0x000004a3    0x50  Code  Gb  main.o [1]
+KeyScan                 0x00007e3d   0x1ae  Code  Gb  oled.o [1]
+LCD_CLS                 0x00006bf5    0x3c  Code  Gb  oled.o [1]
+LCD_DLY_ms              0x00006c6b    0x1c  Code  Gb  oled.o [1]
+LCD_Fill                0x00006bb5    0x40  Code  Gb  oled.o [1]
+LCD_Init                0x00006c87   0x16a  Code  Gb  oled.o [1]
+LCD_PrintImage          0x00007037   0x13e  Code  Gb  oled.o [1]
+LCD_Set_Pos             0x00006b87    0x2e  Code  Gb  oled.o [1]
+LCD_WrCmd               0x00006b05    0x82  Code  Gb  oled.o [1]
+LCD_WrDat               0x00006a6d    0x96  Code  Gb  oled.o [1]
+LCD_clear_L             0x00006c31    0x3a  Code  Gb  oled.o [1]
+Lastgyro                0x1fff4374     0x4  Data  Gb  main.o [1]
+LeftRealSpeed           0x1fff0518     0x4  Data  Gb  main.o [1]
+LeftSpeedPwm            0x1fff4394     0x2  Data  Gb  main.o [1]
+LineCount               0x1fff4398     0x2  Data  Gb  main.o [1]
+Master_Adc_Config       0x1fff04d0    0x10  Data  Gb  adc.o [1]
+OT                      0x1fff04b4     0x1  Data  Gb  main.o [1]
+OddEvenStatus           0x1fff43ca     0x1  Data  Gb  main.o [1]
+PORTX                   0x1fff042c    0x14  Data  Gb  gpio.o [1]
+PTB_isr                 0x000057bd   0x1aa  Code  Gb  main.o [1]
+RealSpeed               0x1fff0514     0x4  Data  Gb  main.o [1]
+Region$$Table$$Base     0x00008d4c           --   Gb  - Linker created -
+Region$$Table$$Limit    0x00008d5c           --   Gb  - Linker created -
+RightRealSpeed          0x1fff051c     0x4  Data  Gb  main.o [1]
+RightSpeedPwm           0x1fff4396     0x2  Data  Gb  main.o [1]
+Row_state               0x1fff4328    0x34  Data  Gb  main.o [1]
+SCI0_send_mesage        0x00004b11   0x344  Code  Gb  main.o [1]
+S_left                  0x1fff43de     0x1  Data  Gb  main.o [1]
+S_right                 0x1fff43dd     0x1  Data  Gb  main.o [1]
+S_straight              0x1fff43df     0x1  Data  Gb  main.o [1]
+Search_BlackEdge        0x00000ecd   0xc8a  Code  Gb  main.o [1]
+Search_WhiteBase        0x00000725   0x6e8  Code  Gb  main.o [1]
+Speed                   0x1fff43b8     0x2  Data  Gb  main.o [1]
+SpeedControl            0x00004631   0x176  Code  Gb  main.o [1]
+SpeedControlOut         0x000047a7    0x44  Code  Gb  main.o [1]
+SpeedPID                0x1fff052c     0x4  Data  Gb  main.o [1]
+SpeedPIDold             0x1fff0530     0x4  Data  Gb  main.o [1]
+SpeedPIDout             0x1fff4390     0x2  Data  Gb  main.o [1]
+Speed_error             0x1fff0520     0x4  Data  Gb  main.o [1]
+Speed_limit             0x1fff0442     0x2  Data  Gb  main.o [1]
+Speed_limit_record      0x1fff437c     0x2  Data  Gb  main.o [1]
+Speed_set               0x1fff0440     0x2  Data  Gb  main.o [1]
+UART0_Init              0x000049f1    0xba  Code  Gb  main.o [1]
+V                       0x1fff04e4     0x4  Data  Gb  main.o [1]
+VideoImage1             0x1fff0534  0x1eac  Data  Gb  main.o [1]
+VideoImage2             0x1fff23e0  0x1eac  Data  Gb  main.o [1]
+VideoImageLine          0x1fff43cd     0x1  Data  Gb  main.o [1]
+Videoclo_Flag           0x1fff43cc     0x1  Data  Gb  main.o [1]
+WHITE_BLACK_OT          0x1fff04b6     0x1  Data  Gb  main.o [1]
+__BOOT_STACK_ADDRESS {Abs}
+                        0x2000fff8           --   Gb  command line/config [2]
+__VECTOR_RAM {Abs}      0x1fff0000           --   Gb  command line/config [2]
+__VECTOR_TABLE {Abs}    0x00000000           --   Gb  command line/config [2]
+__aeabi_cdcmple         0x000084c1          Code  Gb  DblCmpLe.o [4]
+__aeabi_cdrcmple        0x000087e9          Code  Gb  DblCmpGe.o [4]
+__aeabi_cfcmple         0x0000655d          Code  Gb  FltCmpLe.o [4]
+__aeabi_cfrcmple        0x00006765          Code  Gb  FltCmpGe.o [4]
+__aeabi_d2f             0x00006251          Code  Gb  DblToFlt.o [4]
+__aeabi_dadd            0x00006169          Code  Gb  DblAdd.o [4]
+__aeabi_ddiv            0x000062e1          Code  Gb  DblDiv.o [4]
+__aeabi_dmul            0x00005fc5          Code  Gb  DblMul.o [4]
+__aeabi_dsub            0x00008341          Code  Gb  DblSub.o [4]
+__aeabi_errno_addr      0x000087d1     0x6  Code  Gb  errno.o [3]
+__aeabi_f2d             0x00005f75          Code  Gb  FltToDbl.o [4]
+__aeabi_f2iz            0x000069dd          Code  Gb  FltToS32.o [4]
+__aeabi_fadd            0x00006881          Code  Gb  FltAdd.o [4]
+__aeabi_fdiv            0x00006669          Code  Gb  FltDiv.o [4]
+__aeabi_fmul            0x00006905          Code  Gb  FltMul.o [4]
+__aeabi_fsub            0x00006581          Code  Gb  FltSub.o [4]
+__aeabi_i2d             0x00006a21          Code  Gb  I32ToDbl.o [4]
+__aeabi_i2f             0x00006529          Code  Gb  I32ToFlt.o [4]
+__aeabi_ui2f            0x0000653d          Code  Gb  I32ToFlt.o [4]
+__as_entries_start      0xffffffff           --   Gb  command line/config [2]
+__as_table_start        0xffffffff           --   Gb  command line/config [2]
+__cmain                 0x00008d5d          Code  Gb  cmain.o [5]
+__exit                  0x00008d8d    0x14  Code  Gb  exit.o [6]
+__iar_Atan              0x000085f1   0x148  Code  Gb  xatan.o [4]
+__iar_Errno             0x1fff43fc     0x4  Data  Gb  errno.o [3]
+__iar_dadd              0x0000617d          Code  Gb  DblAdd.o [4]
+__iar_data_init3        0x00008d25    0x28  Code  Gb  data_init.o [5]
+__iar_dlib_perthread_access
+                        0x00008817     0x2  Code  Gb  xtls.o [3]
+__iar_dsub              0x00008355          Code  Gb  DblSub.o [4]
+__iar_dsubStart         0x00008367          Code  Gb  DblSub.o [4]
+__iar_edom              0x000087dd          Code  Gb  iarEdom.o [5]
+__iar_fadd              0x00006891          Code  Gb  FltAdd.o [4]
+__iar_fsub              0x00006591          Code  Gb  FltSub.o [4]
+__iar_fsubStart         0x000065a1          Code  Gb  FltSub.o [4]
+__iar_program_start     0x00008db9          Code  Gb  cstartup_M.o [5]
+__iar_sqrt              0x000084f1          Code  Gb  sqrt.o [4]
+__iar_ui2d              0x00006a35          Code  Gb  I32ToDbl.o [4]
+__iar_ui2f              0x00006541          Code  Gb  I32ToFlt.o [4]
+__iar_zero_init3        0x00005f53    0x22  Code  Gb  zero_init3.o [5]
+__low_level_init        0x00008d77     0x4  Code  Gb  low_level_init.o [3]
+__startup               0x00000411          Code  Gb  crt0.o [1]
+__vector_table          0x00000000   0x410  Data  Gb  vectors.o [1]
+_call_main              0x00008d69          Code  Gb  cmain.o [5]
+_exit                   0x00008d81          Code  Gb  cexit.o [5]
+_main                   0x00008d73          Code  Gb  cmain.o [5]
+a                       0x00008790    0x40  Data  Lc  xatan.o [4]
+abs                     0x00000655     0xa  Code  Gb  main.o [1]
+acce                    0x1fff04e8     0x4  Data  Gb  main.o [1]
+acce_G                  0x1fff0500     0x4  Data  Gb  main.o [1]
+acce_angle              0x1fff0504     0x4  Data  Gb  main.o [1]
+acce_offset             0x1fff0508     0x4  Data  Gb  main.o [1]
+acce_static             0x1fff04e0     0x4  Data  Gb  main.o [1]
+across_smile            0x000039b9   0x8ba  Code  Gb  main.o [1]
+ad_ave                  0x00005e59    0x54  Code  Gb  adc.o [1]
+ad_once                 0x00005e13    0x46  Code  Gb  adc.o [1]
+adc_config_alt          0x00005f2d    0x26  Code  Lc  adc.o [1]
+adc_init                0x00005b69   0x2aa  Code  Gb  adc.o [1]
+adc_start               0x00005ead    0x48  Code  Gb  adc.o [1]
+adc_stop                0x00005ef5    0x1a  Code  Gb  adc.o [1]
+angle                   0x1fff439e     0x2  Data  Gb  main.o [1]
+anglePD                 0x1fff4388     0x2  Data  Gb  main.o [1]
+angle_kd                0x1fff0458     0x4  Data  Gb  main.o [1]
+angle_kd_across         0x1fff0460     0x4  Data  Gb  main.o [1]
+angle_kd_set            0x1fff0450     0x4  Data  Gb  main.o [1]
+angle_kp                0x1fff0454     0x4  Data  Gb  main.o [1]
+angle_kp_across         0x1fff045c     0x4  Data  Gb  main.o [1]
+angle_kp_set            0x1fff044c     0x4  Data  Gb  main.o [1]
+angleout                0x1fff43b4     0x2  Data  Gb  main.o [1]
+asin                    0x00006789    0xf0  Code  Gb  asin.o [4]
+barrier                 0x0000355d   0x3de  Code  Gb  main.o [1]
+barrier_l               0x1fff43f1     0x1  Data  Gb  main.o [1]
+barrier_r               0x1fff43f2     0x1  Data  Gb  main.o [1]
+begin                   0x1fff43e9     0x1  Data  Gb  main.o [1]
+begin2                  0x1fff43ea     0x1  Data  Gb  main.o [1]
+big                     0x1fff04c2     0x2  Data  Gb  main.o [1]
+bm3                     0x1fff43eb     0x1  Data  Gb  main.o [1]
+bottom_whitebase        0x1fff43d6     0x1  Data  Gb  main.o [1]
+car_set_start           0x00004f85    0xf6  Code  Gb  main.o [1]
+center_average          0x1fff435c     0x4  Data  Gb  main.o [1]
+center_average_a        0x1fff43a8     0x2  Data  Gb  main.o [1]
+center_average_b        0x1fff43aa     0x2  Data  Gb  main.o [1]
+center_lost_hang        0x1fff43d5     0x1  Data  Gb  main.o [1]
+center_white            0x1fff42f4    0x34  Data  Gb  main.o [1]
+change_value            0x000077c9   0x5fe  Code  Gb  oled.o [1]
+check_start_stop_line   0x00002b01   0x3fe  Code  Gb  main.o [1]
+close                   0x1fff04c4     0x4  Data  Gb  main.o [1]
+common_startup          0x00008b5d    0x88  Code  Gb  start.o [1]
+control_top_whiteline   0x1fff43a2     0x2  Data  Gb  main.o [1]
+count_s                 0x1fff43c6     0x2  Data  Gb  main.o [1]
+counter                 0x1fff43ba     0x2  Data  Gb  main.o [1]
+current_deal_line       0x1fff43ce     0x1  Data  Gb  main.o [1]
+da                      0x1fff0478     0x1  Data  Gb  main.o [1]
+danger_count            0x1fff43a4     0x2  Data  Gb  main.o [1]
+danger_flag             0x1fff04be     0x1  Data  Gb  main.o [1]
+deal_r_flag             0x1fff43e8     0x1  Data  Gb  main.o [1]
+deal_start_line         0x1fff43cf     0x1  Data  Gb  main.o [1]
+default_isr             0x00005fc3     0x2  Code  Gb  vectors.o [1]
+delayms                 0x00006a4d    0x1c  Code  Gb  delay.o [1]
+direction               0x1fff43e0     0x1  Data  Gb  main.o [1]
+enable_irq              0x00008293    0x92  Code  Gb  common.o [1]
+error_servo_ref_d       0x1fff437e     0x2  Data  Gb  main.o [1]
+error_servo_ref_p       0x1fff4380     0x2  Data  Gb  main.o [1]
+exit                    0x00008d7b     0x4  Code  Gb  exit.o [3]
+f_abs16                 0x0000065f    0x12  Code  Gb  main.o [1]
+feng                    0x1fff43ec     0x1  Data  Gb  main.o [1]
+find_whitebase_flag     0x1fff43d7     0x1  Data  Gb  main.o [1]
+ft                      0x1fff0444     0x4  Data  Gb  main.o [1]
+ft1                     0x1fff04c0     0x2  Data  Gb  main.o [1]
+fuxiao                  0x1fff0479     0x1  Data  Gb  main.o [1]
+g_nCarAngle             0x1fff0510     0x4  Data  Gb  main.o [1]
+g_nLeftCount            0x1fff438c     0x2  Data  Gb  main.o [1]
+g_nRightCount           0x1fff438e     0x2  Data  Gb  main.o [1]
+get_line_information    0x00002325   0x7c2  Code  Gb  main.o [1]
+gpio_init               0x00005a81    0x9c  Code  Gb  gpio.o [1]
+gpio_set                0x00005b1d    0x42  Code  Gb  gpio.o [1]
+gyro                    0x1fff04ec     0x4  Data  Gb  main.o [1]
+gyro_offset             0x1fff050c     0x4  Data  Gb  main.o [1]
+hang_search_start       0x1fff43d0     0x1  Data  Gb  main.o [1]
+huanjie                 0x1fff04c9     0x1  Data  Gb  main.o [1]
+init_gyro               0x000005b9    0x80  Code  Gb  main.o [1]
+j                       0x1fff43f5     0x1  Data  Gb  main.o [1]
+jianshu                 0x1fff43f3     0x1  Data  Gb  main.o [1]
+jump_stop               0x1fff04ba     0x1  Data  Gb  main.o [1]
+last_anglePD            0x1fff438a     0x2  Data  Gb  main.o [1]
+lcd_debug               0x1fff047a     0x1  Data  Gb  main.o [1]
+lcd_ref_d               0x1fff4384     0x2  Data  Gb  main.o [1]
+lcd_ref_d1              0x1fff046e     0x2  Data  Gb  main.o [1]
+lcd_ref_d2              0x1fff0472     0x2  Data  Gb  main.o [1]
+lcd_ref_p               0x1fff4382     0x2  Data  Gb  main.o [1]
+lcd_ref_p1              0x1fff046c     0x2  Data  Gb  main.o [1]
+lcd_ref_p1_record       0x1fff43bc     0x2  Data  Gb  main.o [1]
+lcd_ref_p2              0x1fff0470     0x2  Data  Gb  main.o [1]
+lcd_ref_p2_record       0x1fff43be     0x2  Data  Gb  main.o [1]
+left_black              0x1fff428c    0x34  Data  Gb  main.o [1]
+left_top_whiteline      0x1fff04b8     0x1  Data  Gb  main.o [1]
+left_whitebase_searchstart
+                        0x1fff43d3     0x1  Data  Gb  main.o [1]
+line_num                0x1fff43f9     0x1  Data  Gb  oled.o [1]
+liu                     0x1fff04bf     0x1  Data  Gb  main.o [1]
+main                    0x000050f5   0x4a0  Code  Gb  main.o [1]
+motor_I                 0x1fff0528     0x4  Data  Gb  main.o [1]
+motor_P                 0x1fff0524     0x4  Data  Gb  main.o [1]
+page_num                0x1fff43f8     0x1  Data  Gb  oled.o [1]
+pll_init                0x00008a41   0x104  Code  Gb  mcg.o [1]
+pre_Lastgyro            0x1fff4370     0x4  Data  Gb  main.o [1]
+pre_show                0x0000718d   0x432  Code  Gb  oled.o [1]
+qing                    0x1fff04c8     0x1  Data  Gb  main.o [1]
+r_count                 0x1fff43b6     0x2  Data  Gb  main.o [1]
+ramp_delay_time         0x1fff04bc     0x2  Data  Gb  main.o [1]
+ramp_dis_flag           0x1fff43e3     0x1  Data  Gb  main.o [1]
+ramp_dis_time           0x1fff439c     0x2  Data  Gb  main.o [1]
+ramp_flag               0x1fff43e2     0x1  Data  Gb  main.o [1]
+ramp_time               0x1fff439a     0x2  Data  Gb  main.o [1]
+re_angle                0x1fff43a0     0x2  Data  Gb  main.o [1]
+re_direction            0x1fff43e1     0x1  Data  Gb  main.o [1]
+re_refer_error          0x1fff43ac     0x2  Data  Gb  main.o [1]
+re_white_refer          0x1fff04bb     0x1  Data  Gb  main.o [1]
+re_whitepoint_end       0x1fff047d     0x1  Data  Gb  main.o [1]
+re_whitepoint_start     0x1fff047c     0x1  Data  Gb  main.o [1]
+record_flag             0x1fff43f4     0x1  Data  Gb  main.o [1]
+redraw                  0x000075c9   0x1ca  Code  Gb  oled.o [1]
+refer_error             0x1fff43a6     0x2  Data  Gb  main.o [1]
+refer_road_width        0x1fff0480    0x34  Data  Gb  main.o [1]
+reset_count             0x1fff04cc     0x2  Data  Gb  main.o [1]
+right_black             0x1fff42c0    0x34  Data  Gb  main.o [1]
+right_top_whiteline     0x1fff04b9     0x1  Data  Gb  main.o [1]
+right_whitebase_searchstart
+                        0x1fff43d4     0x1  Data  Gb  main.o [1]
+scan_boma               0x00004e79    0x8a  Code  Gb  main.o [1]
+se1                     0x1fff43e5     0x1  Data  Gb  main.o [1]
+se2                     0x1fff43e6     0x1  Data  Gb  main.o [1]
+se3                     0x1fff43e7     0x1  Data  Gb  main.o [1]
+send_mes                0x1fff43e4     0x1  Data  Gb  main.o [1]
+sensor_init             0x00000639    0x1c  Code  Gb  main.o [1]
+set_up_time             0x1fff04ca     0x2  Data  Gb  main.o [1]
+speed_ki                0x1fff0468     0x4  Data  Gb  main.o [1]
+speed_kp                0x1fff0464     0x4  Data  Gb  main.o [1]
+speed_kp_record         0x1fff4378     0x4  Data  Gb  main.o [1]
+sqrt                    0x000084f1          Code  Gb  sqrt.o [4]
+sqrtl                   0x000084f1          Code  Gb  sqrt.o [4]
+start                   0x00008b45    0x18  Code  Gb  start.o [1]
+start1                  0x1fff43c8     0x1  Data  Gb  main.o [1]
+start_stop_count        0x1fff4360     0x4  Data  Gb  main.o [1]
+steerpwmout             0x1fff4392     0x2  Data  Gb  main.o [1]
+stop_special            0x00000671    0xb4  Code  Gb  main.o [1]
+stop_special_flag       0x1fff43db     0x1  Data  Gb  main.o [1]
+stopcount               0x1fff04ce     0x2  Data  Gb  main.o [1]
+sumbe2                  0x1fff43b0     0x2  Data  Gb  main.o [1]
+sumbe3                  0x1fff43b2     0x2  Data  Gb  main.o [1]
+sumbe4                  0x1fff43c0     0x2  Data  Gb  main.o [1]
+sumbe5                  0x1fff43c2     0x2  Data  Gb  main.o [1]
+sumbe6                  0x1fff43c4     0x2  Data  Gb  main.o [1]
+sumbel                  0x1fff43ae     0x2  Data  Gb  main.o [1]
+summ                    0x1fff43c9     0x1  Data  Gb  main.o [1]
+ting                    0x1fff43d9     0x1  Data  Gb  main.o [1]
+ting1                   0x1fff43ee     0x1  Data  Gb  main.o [1]
+ting_check_stop         0x1fff43da     0x1  Data  Gb  main.o [1]
+tingting                0x1fff43d8     0x1  Data  Gb  main.o [1]
+tingting_d              0x1fff0476     0x2  Data  Gb  main.o [1]
+tingting_p              0x1fff4386     0x2  Data  Gb  main.o [1]
+top_whiteline           0x1fff04b7     0x1  Data  Gb  main.o [1]
+trace_clk_init          0x00008be5    0x16  Code  Gb  start.o [1]
+turn_l                  0x1fff43ef     0x1  Data  Gb  main.o [1]
+turn_r                  0x1fff43f0     0x1  Data  Gb  main.o [1]
+uart0_isr               0x000055bd   0x1d0  Code  Gb  main.o [1]
+w                       0x1fff04f0     0x4  Data  Gb  main.o [1]
+wdog_disable            0x00008c2d    0x16  Code  Gb  wdog.o [1]
+wdog_unlock             0x00008c45    0x16  Code  Gb  wdog.o [1]
+white_refer             0x1fff43dc     0x1  Data  Gb  main.o [1]
+whitebase_searchstart   0x1fff047b     0x1  Data  Gb  main.o [1]
+whitepoint_end          0x1fff43d2     0x1  Data  Gb  main.o [1]
+whitepoint_start        0x1fff43d1     0x1  Data  Gb  main.o [1]
+write_6_8_char          0x00006df1    0x50  Code  Gb  oled.o [1]
+write_6_8_number        0x00006ebd   0x17a  Code  Gb  oled.o [1]
+write_6_8_string        0x00006e41    0x7c  Code  Gb  oled.o [1]
+write_vtor              0x0000828d     0x6  Code  Gb  common.o [1]
+zhongjian               0x1fff0474     0x2  Data  Gb  main.o [1]
+zhou                    0x1fff43ed     0x1  Data  Gb  main.o [1]
+
+
+[1] = F:\¡ı”—≤≈ (H)\∑…Àºø®∂˚\liuyoucai\7.12 ÕÌ¡˘µ„£ª‘»ÀŸ\FLASH\Obj
+[2] = command line
+[3] = dl7M_tln.a
+[4] = m7M_tl.a
+[5] = rt7M_tl.a
+[6] = shb_l.a
+
+  34 456 bytes of readonly  code memory
+   2 032 bytes of readonly  data memory
+  16 366 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

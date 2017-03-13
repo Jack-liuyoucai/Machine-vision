@@ -1,0 +1,1293 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.20.1.7305/W32 for ARM        21/Jun/2014  20:39:54
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  L:\6.21\src\Sources\Drivers\adc\adc.c
+#    Command line =  
+#        L:\6.21\src\Sources\Drivers\adc\adc.c -D IAR -D TWR_K60N512 -D DEBUG
+#        -lCN L:\6.21\FLASH\List\ -lB L:\6.21\FLASH\List\ -o L:\6.21\FLASH\Obj\
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M4 -e --fpu=None --dlib_config
+#        D:\dowload\iark60\arm\INC\c\DLib_Config_Normal.h -I
+#        L:\6.21\src\Sources\Cpu\ -I L:\6.21\src\Sources\App\ -I
+#        L:\6.21\src\Sources\Drivers\adc\ -I L:\6.21\src\Sources\Drivers\delay\
+#        -I L:\6.21\src\Sources\Drivers\FTM\ -I
+#        L:\6.21\src\Sources\Drivers\gpio\ -I
+#        L:\6.21\src\Sources\Drivers\lptmr\ -I L:\6.21\src\Sources\Drivers\mcg\
+#        -I L:\6.21\src\Sources\Drivers\PIT\ -I
+#        L:\6.21\src\Sources\Drivers\uart\ -I L:\6.21\src\Sources\Drivers\oled\
+#        -I L:\6.21\src\Sources\Drivers\spi\ -On --use_c++_inline
+#    List file    =  L:\6.21\FLASH\List\adc.lst
+#    Object file  =  L:\6.21\FLASH\Obj\adc.o
+#
+###############################################################################
+
+L:\6.21\src\Sources\Drivers\adc\adc.c
+      1          /******************** ************************* ********************
+      2           * 文件名       ：adc.c
+      3           * 描述         ：adc驱动函数
+      4           *
+      5          **********************************************************************************/
+      6          
+      7          #include "common.h"
+      8          #include "adc.h"
+      9          
+     10          
+     11          
+
+   \                                 In section .bss, align 4
+     12          tADC_Config Master_Adc_Config;          //该结构体包含了需要的ADC/PGA配置
+   \                     Master_Adc_Config:
+   \   00000000                      DS8 16
+     13          
+
+   \                                 In section .data, align 4
+     14          volatile struct ADC_MemMap *ADCx[2] = {ADC0_BASE_PTR, ADC1_BASE_PTR}; //定义两个指针数组保存 ADCx 的地址
+   \                     ADCx:
+   \   00000000   0x4003B000         DC32 4003B000H, 400BB000H
+   \              0x400BB000   
+     15          
+     16          /*************************************************************************
+     17          *                               
+     18          *
+     19          *  函数名称：adc_init
+     20          *  功能说明：AD初始化，使能时钟
+     21          *  参数说明：ADCn        模块号（ ADC0、 ADC1）
+     22          *  函数返回：无
+     23          *  修改时间：2012-2-10
+     24          *  备    注：参考苏州大学的例程
+     25          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+     26          void adc_init(ADCn adcn, ADC_Ch ch)
+     27          { 
+     28            switch(adcn)
+   \                     adc_init: (+1)
+   \   00000000   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   00000002   0x2800             CMP      R0,#+0
+   \   00000004   0xD003             BEQ.N    ??adc_init_0
+   \   00000006   0x2801             CMP      R0,#+1
+   \   00000008   0xF000 0x80A9      BEQ.W    ??adc_init_1
+   \   0000000C   0xE14C             B.N      ??adc_init_2
+     29              {
+     30              case ADC0:       /*   ADC0  */
+     31                  SIM_SCGC6 |= (SIM_SCGC6_ADC0_MASK );        //开启ADC0时钟
+   \                     ??adc_init_0: (+1)
+   \   0000000E   0x.... 0x....      LDR.W    R2,??DataTable5  ;; 0x4004803c
+   \   00000012   0x6812             LDR      R2,[R2, #+0]
+   \   00000014   0xF052 0x6200      ORRS     R2,R2,#0x8000000
+   \   00000018   0x.... 0x....      LDR.W    R3,??DataTable5  ;; 0x4004803c
+   \   0000001C   0x601A             STR      R2,[R3, #+0]
+     32                  SIM_SOPT7 &= ~(SIM_SOPT7_ADC0ALTTRGEN_MASK  | SIM_SOPT7_ADC0PRETRGSEL_MASK);
+   \   0000001E   0x.... 0x....      LDR.W    R2,??DataTable5_1  ;; 0x40048018
+   \   00000022   0x6812             LDR      R2,[R2, #+0]
+   \   00000024   0xF032 0x0290      BICS     R2,R2,#0x90
+   \   00000028   0x.... 0x....      LDR.W    R3,??DataTable5_1  ;; 0x40048018
+   \   0000002C   0x601A             STR      R2,[R3, #+0]
+     33                  SIM_SOPT7 = SIM_SOPT7_ADC0TRGSEL(0);
+   \   0000002E   0x2200             MOVS     R2,#+0
+   \   00000030   0x.... 0x....      LDR.W    R3,??DataTable5_1  ;; 0x40048018
+   \   00000034   0x601A             STR      R2,[R3, #+0]
+     34          
+     35                  switch(ch)
+   \   00000036   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000038   0x000A             MOVS     R2,R1
+   \   0000003A   0x1F12             SUBS     R2,R2,#+4
+   \   0000003C   0xD046             BEQ.N    ??adc_init_3
+   \   0000003E   0x1F12             SUBS     R2,R2,#+4
+   \   00000040   0x2A01             CMP      R2,#+1
+   \   00000042   0xD90D             BLS.N    ??adc_init_4
+   \   00000044   0x1E92             SUBS     R2,R2,#+2
+   \   00000046   0x2A01             CMP      R2,#+1
+   \   00000048   0xD91C             BLS.N    ??adc_init_5
+   \   0000004A   0x1E92             SUBS     R2,R2,#+2
+   \   0000004C   0x2A01             CMP      R2,#+1
+   \   0000004E   0xD92B             BLS.N    ??adc_init_6
+   \   00000050   0x1E92             SUBS     R2,R2,#+2
+   \   00000052   0xD04D             BEQ.N    ??adc_init_7
+   \   00000054   0x1E52             SUBS     R2,R2,#+1
+   \   00000056   0xD05D             BEQ.N    ??adc_init_8
+   \   00000058   0x1E92             SUBS     R2,R2,#+2
+   \   0000005A   0x2A01             CMP      R2,#+1
+   \   0000005C   0xD96C             BLS.N    ??adc_init_9
+   \   0000005E   0xE07C             B.N      ??adc_init_10
+     36                  {
+     37                  case AD8:   //ADC0_SE8 -- PTB0
+     38                  case AD9:   //ADC0_SE9 -- PTB1
+     39                      SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   \                     ??adc_init_4: (+1)
+   \   00000060   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   00000064   0x6812             LDR      R2,[R2, #+0]
+   \   00000066   0xF452 0x6280      ORRS     R2,R2,#0x400
+   \   0000006A   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   0000006E   0x601A             STR      R2,[R3, #+0]
+     40                      PORT_PCR_REG(PORTB_BASE_PTR, ch - AD8 + 0) =  PORT_PCR_MUX(0);
+   \   00000070   0x2200             MOVS     R2,#+0
+   \   00000072   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000074   0x008B             LSLS     R3,R1,#+2
+   \   00000076   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   0000007A   0xF513 0x2394      ADDS     R3,R3,#+303104
+   \   0000007E   0xF843 0x2C20      STR      R2,[R3, #-32]
+     41                      break;
+   \   00000082   0xE06B             B.N      ??adc_init_11
+     42                  case AD10:  //ADC0_SE10 -- PTA7
+     43                  case AD11:  //ADC0_SE11 -- PTA8
+     44                      SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
+   \                     ??adc_init_5: (+1)
+   \   00000084   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   00000088   0x6812             LDR      R2,[R2, #+0]
+   \   0000008A   0xF452 0x7200      ORRS     R2,R2,#0x200
+   \   0000008E   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   00000092   0x601A             STR      R2,[R3, #+0]
+     45                      PORT_PCR_REG(PORTA_BASE_PTR, ch - AD10 + 7) =  PORT_PCR_MUX(0);
+   \   00000094   0x2200             MOVS     R2,#+0
+   \   00000096   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000098   0x008B             LSLS     R3,R1,#+2
+   \   0000009A   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   0000009E   0xF513 0x2392      ADDS     R3,R3,#+299008
+   \   000000A2   0xF843 0x2C0C      STR      R2,[R3, #-12]
+     46                      break;
+   \   000000A6   0xE059             B.N      ??adc_init_11
+     47                  case AD12:  //ADC0_SE12 -- PTB2
+     48                  case AD13:  //ADC0_SE13 -- PTB3
+     49                      SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   \                     ??adc_init_6: (+1)
+   \   000000A8   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   000000AC   0x6812             LDR      R2,[R2, #+0]
+   \   000000AE   0xF452 0x6280      ORRS     R2,R2,#0x400
+   \   000000B2   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   000000B6   0x601A             STR      R2,[R3, #+0]
+     50                      PORT_PCR_REG(PORTB_BASE_PTR, ch - AD12 + 2) =  PORT_PCR_MUX(0);
+   \   000000B8   0x2200             MOVS     R2,#+0
+   \   000000BA   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   000000BC   0x008B             LSLS     R3,R1,#+2
+   \   000000BE   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   000000C2   0xF513 0x2394      ADDS     R3,R3,#+303104
+   \   000000C6   0xF843 0x2C28      STR      R2,[R3, #-40]
+     51                      break;
+   \   000000CA   0xE047             B.N      ??adc_init_11
+     52                   case AD4: 
+     53                       SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;
+   \                     ??adc_init_3: (+1)
+   \   000000CC   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   000000D0   0x6812             LDR      R2,[R2, #+0]
+   \   000000D2   0xF452 0x6200      ORRS     R2,R2,#0x800
+   \   000000D6   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   000000DA   0x601A             STR      R2,[R3, #+0]
+     54                      PORT_PCR_REG(PORTC_BASE_PTR, ch - AD4 + 2) =  PORT_PCR_MUX(0);
+   \   000000DC   0x2200             MOVS     R2,#+0
+   \   000000DE   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   000000E0   0x008B             LSLS     R3,R1,#+2
+   \   000000E2   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   000000E6   0xF513 0x2396      ADDS     R3,R3,#+307200
+   \   000000EA   0xF843 0x2C08      STR      R2,[R3, #-8]
+     55                      break;
+   \   000000EE   0xE035             B.N      ??adc_init_11
+     56                  case AD14:  //ADC0_SE14 -- PTC0
+     57                     SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;
+   \                     ??adc_init_7: (+1)
+   \   000000F0   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   000000F4   0x6812             LDR      R2,[R2, #+0]
+   \   000000F6   0xF452 0x6200      ORRS     R2,R2,#0x800
+   \   000000FA   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   000000FE   0x601A             STR      R2,[R3, #+0]
+     58                      PORT_PCR_REG(PORTC_BASE_PTR, ch - AD14 + 0) =  PORT_PCR_MUX(0);
+   \   00000100   0x2200             MOVS     R2,#+0
+   \   00000102   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000104   0x008B             LSLS     R3,R1,#+2
+   \   00000106   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   0000010A   0xF513 0x2396      ADDS     R3,R3,#+307200
+   \   0000010E   0xF843 0x2C38      STR      R2,[R3, #-56]
+     59                      break;
+   \   00000112   0xE023             B.N      ??adc_init_11
+     60                  case AD15:  //ADC0_SE15 -- PTC1
+     61                      SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;
+   \                     ??adc_init_8: (+1)
+   \   00000114   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   00000118   0x6812             LDR      R2,[R2, #+0]
+   \   0000011A   0xF452 0x6200      ORRS     R2,R2,#0x800
+   \   0000011E   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   00000122   0x601A             STR      R2,[R3, #+0]
+     62                      PORT_PCR_REG(PORTC_BASE_PTR, ch - AD15 + 1) =  PORT_PCR_MUX(0);
+   \   00000124   0x2200             MOVS     R2,#+0
+   \   00000126   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000128   0x008B             LSLS     R3,R1,#+2
+   \   0000012A   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   0000012E   0xF513 0x2396      ADDS     R3,R3,#+307200
+   \   00000132   0xF843 0x2C38      STR      R2,[R3, #-56]
+     63                      break;
+   \   00000136   0xE011             B.N      ??adc_init_11
+     64                  case AD17:   //ADC0_SE17 -- PTE24
+     65                  case AD18:   //ADC0_SE17 -- PTE25
+     66                      SIM_SCGC5 |= SIM_SCGC5_PORTE_MASK;
+   \                     ??adc_init_9: (+1)
+   \   00000138   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   0000013C   0x6812             LDR      R2,[R2, #+0]
+   \   0000013E   0xF452 0x5200      ORRS     R2,R2,#0x2000
+   \   00000142   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   00000146   0x601A             STR      R2,[R3, #+0]
+     67                      PORT_PCR_REG(PORTE_BASE_PTR, ch - AD17 + 24) =  PORT_PCR_MUX(0);
+   \   00000148   0x2200             MOVS     R2,#+0
+   \   0000014A   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   0000014C   0x008B             LSLS     R3,R1,#+2
+   \   0000014E   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   00000152   0xF513 0x239A      ADDS     R3,R3,#+315392
+   \   00000156   0x61DA             STR      R2,[R3, #+28]
+     68                      break;
+   \   00000158   0xE000             B.N      ??adc_init_11
+     69                  default:
+     70                      return;
+   \                     ??adc_init_10: (+1)
+   \   0000015A   0xE0A5             B.N      ??adc_init_12
+     71                  }
+     72                  return;
+   \                     ??adc_init_11: (+1)
+   \   0000015C   0xE0A4             B.N      ??adc_init_12
+     73          
+     74              case ADC1:       /*   ADC1    */
+     75                  SIM_SCGC3 |= (SIM_SCGC3_ADC1_MASK );
+   \                     ??adc_init_1: (+1)
+   \   0000015E   0x.... 0x....      LDR.W    R2,??DataTable5_3  ;; 0x40048030
+   \   00000162   0x6812             LDR      R2,[R2, #+0]
+   \   00000164   0xF052 0x6200      ORRS     R2,R2,#0x8000000
+   \   00000168   0x.... 0x....      LDR.W    R3,??DataTable5_3  ;; 0x40048030
+   \   0000016C   0x601A             STR      R2,[R3, #+0]
+     76                  SIM_SOPT7 &= ~(SIM_SOPT7_ADC1ALTTRGEN_MASK  | SIM_SOPT7_ADC1PRETRGSEL_MASK) ;
+   \   0000016E   0x.... 0x....      LDR.W    R2,??DataTable5_1  ;; 0x40048018
+   \   00000172   0x6812             LDR      R2,[R2, #+0]
+   \   00000174   0xF432 0x4210      BICS     R2,R2,#0x9000
+   \   00000178   0x.... 0x....      LDR.W    R3,??DataTable5_1  ;; 0x40048018
+   \   0000017C   0x601A             STR      R2,[R3, #+0]
+     77                  SIM_SOPT7 = SIM_SOPT7_ADC1TRGSEL(0);
+   \   0000017E   0x2200             MOVS     R2,#+0
+   \   00000180   0x.... 0x....      LDR.W    R3,??DataTable5_1  ;; 0x40048018
+   \   00000184   0x601A             STR      R2,[R3, #+0]
+     78          
+     79                  switch(ch)
+   \   00000186   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000188   0x000A             MOVS     R2,R1
+   \   0000018A   0x1F12             SUBS     R2,R2,#+4
+   \   0000018C   0x2A03             CMP      R2,#+3
+   \   0000018E   0xD90F             BLS.N    ??adc_init_13
+   \   00000190   0x1F12             SUBS     R2,R2,#+4
+   \   00000192   0x2A01             CMP      R2,#+1
+   \   00000194   0xD91E             BLS.N    ??adc_init_14
+   \   00000196   0x1E92             SUBS     R2,R2,#+2
+   \   00000198   0xD02E             BEQ.N    ??adc_init_15
+   \   0000019A   0x1E52             SUBS     R2,R2,#+1
+   \   0000019C   0xD03E             BEQ.N    ??adc_init_16
+   \   0000019E   0x1E52             SUBS     R2,R2,#+1
+   \   000001A0   0x2A01             CMP      R2,#+1
+   \   000001A2   0xD94D             BLS.N    ??adc_init_17
+   \   000001A4   0x1E92             SUBS     R2,R2,#+2
+   \   000001A6   0x2A01             CMP      R2,#+1
+   \   000001A8   0xD95C             BLS.N    ??adc_init_18
+   \   000001AA   0x1ED2             SUBS     R2,R2,#+3
+   \   000001AC   0xD06C             BEQ.N    ??adc_init_19
+   \   000001AE   0xE07A             B.N      ??adc_init_20
+     80                  {
+     81                  case AD4a:   //ADC1_SE4a -- PTE0
+     82                  case AD5a:   //ADC1_SE5a -- PTE1
+     83                  case AD6a:   //ADC1_SE6a -- PTE2
+     84                  case AD7a:   //ADC1_SE7a -- PTE3
+     85                      SIM_SCGC5 |= SIM_SCGC5_PORTE_MASK;
+   \                     ??adc_init_13: (+1)
+   \   000001B0   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   000001B4   0x6812             LDR      R2,[R2, #+0]
+   \   000001B6   0xF452 0x5200      ORRS     R2,R2,#0x2000
+   \   000001BA   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   000001BE   0x601A             STR      R2,[R3, #+0]
+     86                      PORT_PCR_REG(PORTE_BASE_PTR, ch - AD4a + 0) =  PORT_PCR_MUX(0);
+   \   000001C0   0x2200             MOVS     R2,#+0
+   \   000001C2   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   000001C4   0x008B             LSLS     R3,R1,#+2
+   \   000001C6   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   000001CA   0xF513 0x239A      ADDS     R3,R3,#+315392
+   \   000001CE   0xF843 0x2C10      STR      R2,[R3, #-16]
+     87                      break;
+   \   000001D2   0xE068             B.N      ??adc_init_21
+     88                  case AD8:  //ADC1_SE8 -- PTB0
+     89                  case AD9:  //ADC1_SE9 -- PTB1
+     90                      SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   \                     ??adc_init_14: (+1)
+   \   000001D4   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   000001D8   0x6812             LDR      R2,[R2, #+0]
+   \   000001DA   0xF452 0x6280      ORRS     R2,R2,#0x400
+   \   000001DE   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   000001E2   0x601A             STR      R2,[R3, #+0]
+     91                      PORT_PCR_REG(PORTB_BASE_PTR, ch - AD8 + 0) =  PORT_PCR_MUX(0);
+   \   000001E4   0x2200             MOVS     R2,#+0
+   \   000001E6   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   000001E8   0x008B             LSLS     R3,R1,#+2
+   \   000001EA   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   000001EE   0xF513 0x2394      ADDS     R3,R3,#+303104
+   \   000001F2   0xF843 0x2C20      STR      R2,[R3, #-32]
+     92                      break;
+   \   000001F6   0xE056             B.N      ??adc_init_21
+     93                  case AD10:  //ADC1_SE10 -- PTB4
+     94                      SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   \                     ??adc_init_15: (+1)
+   \   000001F8   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   000001FC   0x6812             LDR      R2,[R2, #+0]
+   \   000001FE   0xF452 0x6280      ORRS     R2,R2,#0x400
+   \   00000202   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   00000206   0x601A             STR      R2,[R3, #+0]
+     95                      PORT_PCR_REG(PORTB_BASE_PTR, ch - AD10+4) =  PORT_PCR_MUX(0);
+   \   00000208   0x2200             MOVS     R2,#+0
+   \   0000020A   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   0000020C   0x008B             LSLS     R3,R1,#+2
+   \   0000020E   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   00000212   0xF513 0x2394      ADDS     R3,R3,#+303104
+   \   00000216   0xF843 0x2C18      STR      R2,[R3, #-24]
+     96                      break;
+   \   0000021A   0xE044             B.N      ??adc_init_21
+     97                  case AD11:  //ADC1_SE11 -- PTB5
+     98                      SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   \                     ??adc_init_16: (+1)
+   \   0000021C   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   00000220   0x6812             LDR      R2,[R2, #+0]
+   \   00000222   0xF452 0x6280      ORRS     R2,R2,#0x400
+   \   00000226   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   0000022A   0x601A             STR      R2,[R3, #+0]
+     99                      PORT_PCR_REG(PORTB_BASE_PTR, ch -AD11+5) =  PORT_PCR_MUX(0);
+   \   0000022C   0x2200             MOVS     R2,#+0
+   \   0000022E   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000230   0x008B             LSLS     R3,R1,#+2
+   \   00000232   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   00000236   0xF513 0x2394      ADDS     R3,R3,#+303104
+   \   0000023A   0xF843 0x2C18      STR      R2,[R3, #-24]
+    100                      break;
+   \   0000023E   0xE032             B.N      ??adc_init_21
+    101                  case AD12:  //ADC1_SE12 -- PTB6
+    102                  case AD13:  //ADC1_SE13 -- PTB7
+    103                      SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   \                     ??adc_init_17: (+1)
+   \   00000240   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   00000244   0x6812             LDR      R2,[R2, #+0]
+   \   00000246   0xF452 0x6280      ORRS     R2,R2,#0x400
+   \   0000024A   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   0000024E   0x601A             STR      R2,[R3, #+0]
+    104                      PORT_PCR_REG(PORTB_BASE_PTR, ch - 6) =  PORT_PCR_MUX(0);
+   \   00000250   0x2200             MOVS     R2,#+0
+   \   00000252   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000254   0x008B             LSLS     R3,R1,#+2
+   \   00000256   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   0000025A   0xF513 0x2394      ADDS     R3,R3,#+303104
+   \   0000025E   0xF843 0x2C18      STR      R2,[R3, #-24]
+    105                      break;
+   \   00000262   0xE020             B.N      ??adc_init_21
+    106                  case AD14:  //ADC1_SE14 -- PTB10
+    107                  case AD15:  //ADC1_SE15 -- PTB11
+    108                      SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+   \                     ??adc_init_18: (+1)
+   \   00000264   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   00000268   0x6812             LDR      R2,[R2, #+0]
+   \   0000026A   0xF452 0x6280      ORRS     R2,R2,#0x400
+   \   0000026E   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   00000272   0x601A             STR      R2,[R3, #+0]
+    109                      PORT_PCR_REG(PORTB_BASE_PTR, ch - AD10 + 4) =  PORT_PCR_MUX(0);
+   \   00000274   0x2200             MOVS     R2,#+0
+   \   00000276   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000278   0x008B             LSLS     R3,R1,#+2
+   \   0000027A   0xF103 0x4380      ADD      R3,R3,#+1073741824
+   \   0000027E   0xF513 0x2394      ADDS     R3,R3,#+303104
+   \   00000282   0xF843 0x2C18      STR      R2,[R3, #-24]
+    110                      break;
+   \   00000286   0xE00E             B.N      ??adc_init_21
+    111                  case AD17:  //ADC1_SE17 -- PTA17
+    112                      SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
+   \                     ??adc_init_19: (+1)
+   \   00000288   0x.... 0x....      LDR.W    R2,??DataTable5_2  ;; 0x40048038
+   \   0000028C   0x6812             LDR      R2,[R2, #+0]
+   \   0000028E   0xF452 0x7200      ORRS     R2,R2,#0x200
+   \   00000292   0x.... 0x....      LDR.W    R3,??DataTable5_2  ;; 0x40048038
+   \   00000296   0x601A             STR      R2,[R3, #+0]
+    113                      PORT_PCR_REG(PORTA_BASE_PTR, ch) =  PORT_PCR_MUX(0);
+   \   00000298   0x2200             MOVS     R2,#+0
+   \   0000029A   0x.... 0x....      LDR.W    R3,??DataTable5_4  ;; 0x40049000
+   \   0000029E   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   000002A0   0xF843 0x2021      STR      R2,[R3, R1, LSL #+2]
+    114                      break;
+   \   000002A4   0xE7FF             B.N      ??adc_init_21
+    115                  default:
+    116                      break;
+    117                  }
+    118                  break;
+   \                     ??adc_init_20: (+1)
+   \                     ??adc_init_21: (+1)
+   \   000002A6   0xE7FF             B.N      ??adc_init_22
+    119              default:
+    120                  break;
+    121              }
+    122          }
+   \                     ??adc_init_2: (+1)
+   \                     ??adc_init_22: (+1)
+   \                     ??adc_init_12: (+1)
+   \   000002A8   0x4770             BX       LR               ;; return
+    123          
+    124          
+    125          /*************************************************************************
+    126          *                               
+    127          *
+    128          *  函数名称：ad_once
+    129          *  功能说明：采集一次一路模拟量的AD值
+    130          *  参数说明：ADCn        模块号（ ADC0、 ADC1）
+    131          *            ADC_Channel 通道号
+    132          *            ADC_nbit    精度（ ADC_8bit,ADC_12bit, ADC_10bit, ADC_16bit ）
+    133          *  函数返回：无符号结果值
+    134          *  修改时间：2012-2-10
+    135          *  备    注：参考苏州大学的例程，B通道不能软件触发！！！！
+    136          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    137          uint16 ad_once(ADCn adcn, ADC_Ch ch, ADC_nbit bit) //采集某路模拟量的AD值
+    138          {
+   \                     ad_once: (+1)
+   \   00000000   0xB430             PUSH     {R4,R5}
+   \   00000002   0x0003             MOVS     R3,R0
+    139              uint16 result = 0;
+   \   00000004   0x2000             MOVS     R0,#+0
+    140              //ASSERT( ((adcn == ADC0) && (ch >= AD8 && ch <= AD18)) || ((adcn == ADC1) && (ch >= AD4a && ch <= AD17)) ) ; //使用断言检测ADCn_CHn是否正常
+    141          
+    142              //adc_start(adcn, ch, bit);	  //启动ADC转换
+    143          
+    144              while (( ADC_SC1_REG(ADCx[adcn], 0 ) & ADC_SC1_COCO_MASK ) != ADC_SC1_COCO_MASK);
+   \                     ??ad_once_0: (+1)
+   \   00000006   0x.... 0x....      LDR.W    R4,??DataTable5_5
+   \   0000000A   0xB2DB             UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+   \   0000000C   0xF854 0x4023      LDR      R4,[R4, R3, LSL #+2]
+   \   00000010   0x6824             LDR      R4,[R4, #+0]
+   \   00000012   0x0624             LSLS     R4,R4,#+24
+   \   00000014   0xD5F7             BPL.N    ??ad_once_0
+    145              result = ADC_R_REG(ADCx[adcn], 0);
+   \   00000016   0x.... 0x....      LDR.W    R4,??DataTable5_5
+   \   0000001A   0xB2DB             UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+   \   0000001C   0xF854 0x4023      LDR      R4,[R4, R3, LSL #+2]
+   \   00000020   0x6924             LDR      R4,[R4, #+16]
+   \   00000022   0x0020             MOVS     R0,R4
+    146              ADC_SC1_REG(ADCx[adcn], 0) &= ~ADC_SC1_COCO_MASK;
+   \   00000024   0x.... 0x....      LDR.W    R4,??DataTable5_5
+   \   00000028   0xB2DB             UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+   \   0000002A   0xF854 0x4023      LDR      R4,[R4, R3, LSL #+2]
+   \   0000002E   0x6824             LDR      R4,[R4, #+0]
+   \   00000030   0xF034 0x0480      BICS     R4,R4,#0x80
+   \   00000034   0x.... 0x....      LDR.W    R5,??DataTable5_5
+   \   00000038   0xB2DB             UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+   \   0000003A   0xF855 0x5023      LDR      R5,[R5, R3, LSL #+2]
+   \   0000003E   0x602C             STR      R4,[R5, #+0]
+    147              return result;
+   \   00000040   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000042   0xBC30             POP      {R4,R5}
+   \   00000044   0x4770             BX       LR               ;; return
+    148          }
+    149          
+    150          /*************************************************************************
+    151          *                               
+    152          *
+    153          *  函数名称：ad_mid
+    154          *  功能说明：采集三次一路模拟量的AD值，返回 中值
+    155          *  参数说明：ADCx        模块号（ ADC0、 ADC1）
+    156          *            ADC_Channel 通道号
+    157          *            ADC_nbit    精度（ ADC_8bit,ADC_12bit, ADC_10bit, ADC_16bit ）
+    158          *  函数返回：无符号结果值
+    159          *  修改时间：2012-2-10
+    160          *  备    注：修改苏州大学的例程
+    161          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    162          uint16 ad_mid(ADCn adcn, ADC_Ch ch, ADC_nbit bit)
+    163          {
+   \                     ad_mid: (+1)
+   \   00000000   0xE92D 0x47F0      PUSH     {R4-R10,LR}
+   \   00000004   0x0006             MOVS     R6,R0
+   \   00000006   0x000F             MOVS     R7,R1
+   \   00000008   0x4690             MOV      R8,R2
+    164              uint16 i, j, k, tmp;
+    165              //ASSERT( ((adcn == ADC0) && (ch >= AD8 && ch <= AD18)) || ((adcn == ADC1) && (ch >= AD4a && ch <= AD17)) ) ; //使用断言检测ADCn_CHn是否正常
+    166          
+    167              //3次ADC转换
+    168              i = ad_once(adcn, ch, bit);
+   \   0000000A   0x4642             MOV      R2,R8
+   \   0000000C   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   0000000E   0x0039             MOVS     R1,R7
+   \   00000010   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000012   0x0030             MOVS     R0,R6
+   \   00000014   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   00000016   0x.... 0x....      BL       ad_once
+   \   0000001A   0x4681             MOV      R9,R0
+    169              j = ad_once(adcn, ch, bit);
+   \   0000001C   0x4642             MOV      R2,R8
+   \   0000001E   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   00000020   0x0039             MOVS     R1,R7
+   \   00000022   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000024   0x0030             MOVS     R0,R6
+   \   00000026   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   00000028   0x.... 0x....      BL       ad_once
+   \   0000002C   0x4682             MOV      R10,R0
+    170              k = ad_once(adcn, ch, bit);
+   \   0000002E   0x4642             MOV      R2,R8
+   \   00000030   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   00000032   0x0039             MOVS     R1,R7
+   \   00000034   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000036   0x0030             MOVS     R0,R6
+   \   00000038   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   0000003A   0x.... 0x....      BL       ad_once
+   \   0000003E   0x0005             MOVS     R5,R0
+    171          
+    172              //取中值
+    173              tmp = i > j ? i : j;          //tmp取两者最大值
+   \   00000040   0xFA1F 0xFA8A      UXTH     R10,R10          ;; ZeroExt  R10,R10,#+16,#+16
+   \   00000044   0xFA1F 0xF989      UXTH     R9,R9            ;; ZeroExt  R9,R9,#+16,#+16
+   \   00000048   0x45CA             CMP      R10,R9
+   \   0000004A   0xD201             BCS.N    ??ad_mid_0
+   \   0000004C   0x464C             MOV      R4,R9
+   \   0000004E   0xE000             B.N      ??ad_mid_1
+   \                     ??ad_mid_0: (+1)
+   \   00000050   0x4654             MOV      R4,R10
+    174              return k > tmp ?    tmp :  (   k > i  ?    k   :     i  );
+   \                     ??ad_mid_1: (+1)
+   \   00000052   0xB2A4             UXTH     R4,R4            ;; ZeroExt  R4,R4,#+16,#+16
+   \   00000054   0xB2AD             UXTH     R5,R5            ;; ZeroExt  R5,R5,#+16,#+16
+   \   00000056   0x42AC             CMP      R4,R5
+   \   00000058   0xD201             BCS.N    ??ad_mid_2
+   \   0000005A   0x46A1             MOV      R9,R4
+   \   0000005C   0xE006             B.N      ??ad_mid_3
+   \                     ??ad_mid_2: (+1)
+   \   0000005E   0xFA1F 0xF989      UXTH     R9,R9            ;; ZeroExt  R9,R9,#+16,#+16
+   \   00000062   0xB2AD             UXTH     R5,R5            ;; ZeroExt  R5,R5,#+16,#+16
+   \   00000064   0x45A9             CMP      R9,R5
+   \   00000066   0xD201             BCS.N    ??ad_mid_4
+   \   00000068   0x46A9             MOV      R9,R5
+   \   0000006A   0xE7FF             B.N      ??ad_mid_3
+   \                     ??ad_mid_4: (+1)
+   \                     ??ad_mid_3: (+1)
+   \   0000006C   0x4648             MOV      R0,R9
+   \   0000006E   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000070   0xE8BD 0x87F0      POP      {R4-R10,PC}      ;; return
+    175              //                k>tmp>i             tmp>k>i   tmp>i>k
+    176          }
+    177          /*************************************************************************
+    178          *                               
+    179          *
+    180          *  函数名称：ad_mid_last
+    181          *  功能说明：采集一次一路模拟量的AD值，与过去的三次相比较，返回 中值
+    182          *  参数说明：ADCx        模块号（ ADC0、 ADC1）
+    183          *            ADC_Channel 通道号
+    184          *            ADC_nbit    精度（ ADC_8bit,ADC_12bit, ADC_10bit, ADC_16bit ）
+    185          *  函数返回：无符号结果值
+    186          *  修改时间：2012-2-10
+    187          *  备    注：修改苏州大学的例程
+    188          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    189           uint16 ad_mid_last(ADCn adcn, ADC_Ch ch, ADC_nbit bit)
+    190          {
+   \                     ad_mid_last: (+1)
+   \   00000000   0xB5F0             PUSH     {R4-R7,LR}
+   \   00000002   0xB083             SUB      SP,SP,#+12
+   \   00000004   0x0004             MOVS     R4,R0
+   \   00000006   0x000D             MOVS     R5,R1
+   \   00000008   0x0016             MOVS     R6,R2
+    191              uint16 tmp;
+    192              uint16 temp[3]={0};
+   \   0000000A   0xA800             ADD      R0,SP,#+0
+   \   0000000C   0x2100             MOVS     R1,#+0
+   \   0000000E   0x2200             MOVS     R2,#+0
+   \   00000010   0xC006             STM      R0!,{R1,R2}
+   \   00000012   0x3808             SUBS     R0,R0,#+8
+    193              //ASSERT( ((adcn == ADC0) && (ch >= AD8 && ch <= AD18)) || ((adcn == ADC1) && (ch >= AD4a && ch <= AD17)) ) ; //使用断言检测ADCn_CHn是否正常
+    194          
+    195              //3次ADC转换
+    196              temp[0]=temp[1];
+   \   00000014   0xF8BD 0x0002      LDRH     R0,[SP, #+2]
+   \   00000018   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+    197              temp[1]=temp[2];
+   \   0000001C   0xF8BD 0x0004      LDRH     R0,[SP, #+4]
+   \   00000020   0xF8AD 0x0002      STRH     R0,[SP, #+2]
+    198              temp[2]=ad_once(adcn, ch, bit);
+   \   00000024   0x0032             MOVS     R2,R6
+   \   00000026   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   00000028   0x0029             MOVS     R1,R5
+   \   0000002A   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   0000002C   0x0020             MOVS     R0,R4
+   \   0000002E   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   00000030   0x.... 0x....      BL       ad_once
+   \   00000034   0xF8AD 0x0004      STRH     R0,[SP, #+4]
+    199          
+    200              //取中值
+    201              tmp = temp[0] > temp[1] ? temp[0] : temp[1];          //tmp取两者最大值
+   \   00000038   0xF8BD 0x0002      LDRH     R0,[SP, #+2]
+   \   0000003C   0xF8BD 0x1000      LDRH     R1,[SP, #+0]
+   \   00000040   0x4288             CMP      R0,R1
+   \   00000042   0xD202             BCS.N    ??ad_mid_last_0
+   \   00000044   0xF8BD 0x7000      LDRH     R7,[SP, #+0]
+   \   00000048   0xE001             B.N      ??ad_mid_last_1
+   \                     ??ad_mid_last_0: (+1)
+   \   0000004A   0xF8BD 0x7002      LDRH     R7,[SP, #+2]
+    202              return temp[2] > tmp ?    tmp :  (   temp[2] > temp[0]  ?   temp[2]   :   temp[0]    );
+   \                     ??ad_mid_last_1: (+1)
+   \   0000004E   0xF8BD 0x0004      LDRH     R0,[SP, #+4]
+   \   00000052   0xB2BF             UXTH     R7,R7            ;; ZeroExt  R7,R7,#+16,#+16
+   \   00000054   0x4287             CMP      R7,R0
+   \   00000056   0xD30A             BCC.N    ??ad_mid_last_2
+   \                     ??ad_mid_last_3: (+1)
+   \   00000058   0xF8BD 0x0000      LDRH     R0,[SP, #+0]
+   \   0000005C   0xF8BD 0x1004      LDRH     R1,[SP, #+4]
+   \   00000060   0x4288             CMP      R0,R1
+   \   00000062   0xD202             BCS.N    ??ad_mid_last_4
+   \   00000064   0xF8BD 0x7004      LDRH     R7,[SP, #+4]
+   \   00000068   0xE001             B.N      ??ad_mid_last_2
+   \                     ??ad_mid_last_4: (+1)
+   \   0000006A   0xF8BD 0x7000      LDRH     R7,[SP, #+0]
+   \                     ??ad_mid_last_2: (+1)
+   \   0000006E   0x0038             MOVS     R0,R7
+   \   00000070   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000072   0xBDFE             POP      {R1-R7,PC}       ;; return
+    203              //                k>tmp>i             tmp>k>i   tmp>i>k
+    204          }
+    205          /*************************************************************************
+    206          *                               
+    207          *
+    208          *  函数名称：ad_ave
+    209          *  功能说明：多次采样，取平均值
+    210          *  参数说明：ADCx        模块号（ ADC0、 ADC1）
+    211          *            ADC_Channel 通道号
+    212          *            ADC_nbit    精度（ ADC_8bit,ADC_12bit, ADC_10bit, ADC_16bit ）
+    213          *            N           均值滤波次数(范围:0~255)
+    214          *  函数返回：16位无符号结果值
+    215          *  修改时间：2012-2-10
+    216          *  备    注：修改苏州大学的例程
+    217          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    218          float ad_ave(ADCn adcn, ADC_Ch ch, ADC_nbit bit, uint8 N) //均值滤波
+    219          {
+   \                     ad_ave: (+1)
+   \   00000000   0xE92D 0x43F8      PUSH     {R3-R9,LR}
+   \   00000004   0x0004             MOVS     R4,R0
+   \   00000006   0x000D             MOVS     R5,R1
+   \   00000008   0x0016             MOVS     R6,R2
+   \   0000000A   0x001F             MOVS     R7,R3
+    220              float tmp = 0;
+   \   0000000C   0xF05F 0x0800      MOVS     R8,#+0
+    221              uint8  i;
+    222              //ASSERT( ((adcn == ADC0) && (ch >= AD8 && ch <= AD18)) || ((adcn == ADC1) && (ch >= AD4a && ch <= AD17)) ) ; //使用断言检测ADCn_CHn是否正常
+    223          
+    224              for(i = 0; i < N; i++)
+   \   00000010   0x2000             MOVS     R0,#+0
+   \   00000012   0x4681             MOV      R9,R0
+   \                     ??ad_ave_0: (+1)
+   \   00000014   0xFA5F 0xF989      UXTB     R9,R9            ;; ZeroExt  R9,R9,#+24,#+24
+   \   00000018   0xB2FF             UXTB     R7,R7            ;; ZeroExt  R7,R7,#+24,#+24
+   \   0000001A   0x45B9             CMP      R9,R7
+   \   0000001C   0xD210             BCS.N    ??ad_ave_1
+    225                  tmp += ad_once(adcn, ch, bit);
+   \   0000001E   0x0032             MOVS     R2,R6
+   \   00000020   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   00000022   0x0029             MOVS     R1,R5
+   \   00000024   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000026   0x0020             MOVS     R0,R4
+   \   00000028   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   0000002A   0x.... 0x....      BL       ad_once
+   \   0000002E   0x.... 0x....      BL       __aeabi_ui2f
+   \   00000032   0x4641             MOV      R1,R8
+   \   00000034   0x.... 0x....      BL       __aeabi_fadd
+   \   00000038   0x4680             MOV      R8,R0
+   \   0000003A   0xF119 0x0901      ADDS     R9,R9,#+1
+   \   0000003E   0xE7E9             B.N      ??ad_ave_0
+    226              
+    227              return tmp / N;
+   \                     ??ad_ave_1: (+1)
+   \   00000040   0xB2FF             UXTB     R7,R7            ;; ZeroExt  R7,R7,#+24,#+24
+   \   00000042   0x0038             MOVS     R0,R7
+   \   00000044   0x.... 0x....      BL       __aeabi_ui2f
+   \   00000048   0x0001             MOVS     R1,R0
+   \   0000004A   0x4640             MOV      R0,R8
+   \   0000004C   0x.... 0x....      BL       __aeabi_fdiv
+   \   00000050   0xE8BD 0x83F2      POP      {R1,R4-R9,PC}    ;; return
+    228          }
+    229          /*************************************************************************
+    230          *                               
+    231          *
+    232          *  函数名称：ad_ave_mid
+    233          *  功能说明：多次采样，取平均值
+    234          *  参数说明：ADCx        模块号（ ADC0、 ADC1）
+    235          *            ADC_Channel 通道号
+    236          *            ADC_nbit    精度（ ADC_8bit,ADC_12bit, ADC_10bit, ADC_16bit ）
+    237          *            N           均值滤波次数(范围:0~255)
+    238          *  函数返回：16位无符号结果值
+    239          *  修改时间：2012-2-10
+    240          *  备    注：修改苏州大学的例程
+    241          *************************************************************************/
+    242          
+
+   \                                 In section .bss, align 4
+    243          uint16 AD[50] ={0};
+   \                     AD:
+   \   00000000                      DS8 100
+    244          
+
+   \                                 In section .text, align 2, keep-with-next
+    245          float ad_ave_mid(ADCn adcn, ADC_Ch ch, ADC_nbit bit, uint8 N) //均值滤波
+    246          {
+   \                     ad_ave_mid: (+1)
+   \   00000000   0xE92D 0x4FF1      PUSH     {R0,R4-R11,LR}
+   \   00000004   0x000C             MOVS     R4,R1
+   \   00000006   0x0015             MOVS     R5,R2
+   \   00000008   0x001E             MOVS     R6,R3
+    247              
+    248              
+    249              uint8 i,m,n;
+    250              uint16 temp=0;
+   \   0000000A   0xF05F 0x0A00      MOVS     R10,#+0
+    251              float sum=0; 
+   \   0000000E   0xF05F 0x0B00      MOVS     R11,#+0
+    252          
+    253                   
+    254              for(i=0; i<N; i++)
+   \   00000012   0x2000             MOVS     R0,#+0
+   \   00000014   0x0007             MOVS     R7,R0
+   \                     ??ad_ave_mid_0: (+1)
+   \   00000016   0xB2FF             UXTB     R7,R7            ;; ZeroExt  R7,R7,#+24,#+24
+   \   00000018   0xB2F6             UXTB     R6,R6            ;; ZeroExt  R6,R6,#+24,#+24
+   \   0000001A   0x42B7             CMP      R7,R6
+   \   0000001C   0xD20D             BCS.N    ??ad_ave_mid_1
+    255                   {
+    256                        AD[i]=ad_once(adcn, ch, bit);
+   \   0000001E   0x002A             MOVS     R2,R5
+   \   00000020   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   00000022   0x0021             MOVS     R1,R4
+   \   00000024   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000026   0xF89D 0x0000      LDRB     R0,[SP, #+0]
+   \   0000002A   0x.... 0x....      BL       ad_once
+   \   0000002E   0x....             LDR.N    R1,??DataTable5_6
+   \   00000030   0xB2FF             UXTB     R7,R7            ;; ZeroExt  R7,R7,#+24,#+24
+   \   00000032   0xF821 0x0017      STRH     R0,[R1, R7, LSL #+1]
+    257                   } 
+   \   00000036   0x1C7F             ADDS     R7,R7,#+1
+   \   00000038   0xE7ED             B.N      ??ad_ave_mid_0
+    258                       
+    259              for(m = 0; m < N-1; m++)
+   \                     ??ad_ave_mid_1: (+1)
+   \   0000003A   0x2000             MOVS     R0,#+0
+   \   0000003C   0x4680             MOV      R8,R0
+   \                     ??ad_ave_mid_2: (+1)
+   \   0000003E   0xFA5F 0xF888      UXTB     R8,R8            ;; ZeroExt  R8,R8,#+24,#+24
+   \   00000042   0xB2F6             UXTB     R6,R6            ;; ZeroExt  R6,R6,#+24,#+24
+   \   00000044   0x1E70             SUBS     R0,R6,#+1
+   \   00000046   0x4580             CMP      R8,R0
+   \   00000048   0xDA2E             BGE.N    ??ad_ave_mid_3
+    260              {
+    261                for(n = m+1; n < N; n++) 
+   \   0000004A   0xF118 0x0001      ADDS     R0,R8,#+1
+   \   0000004E   0x4681             MOV      R9,R0
+   \                     ??ad_ave_mid_4: (+1)
+   \   00000050   0xFA5F 0xF989      UXTB     R9,R9            ;; ZeroExt  R9,R9,#+24,#+24
+   \   00000054   0xB2F6             UXTB     R6,R6            ;; ZeroExt  R6,R6,#+24,#+24
+   \   00000056   0x45B1             CMP      R9,R6
+   \   00000058   0xD223             BCS.N    ??ad_ave_mid_5
+    262                        
+    263              {
+    264                if(AD[m]>AD[n])
+   \   0000005A   0x....             LDR.N    R0,??DataTable5_6
+   \   0000005C   0xFA5F 0xF989      UXTB     R9,R9            ;; ZeroExt  R9,R9,#+24,#+24
+   \   00000060   0xF830 0x0019      LDRH     R0,[R0, R9, LSL #+1]
+   \   00000064   0x....             LDR.N    R1,??DataTable5_6
+   \   00000066   0xFA5F 0xF888      UXTB     R8,R8            ;; ZeroExt  R8,R8,#+24,#+24
+   \   0000006A   0xF831 0x1018      LDRH     R1,[R1, R8, LSL #+1]
+   \   0000006E   0x4288             CMP      R0,R1
+   \   00000070   0xD214             BCS.N    ??ad_ave_mid_6
+    265                {
+    266                           
+    267                  temp=AD[m];
+   \   00000072   0x....             LDR.N    R0,??DataTable5_6
+   \   00000074   0xFA5F 0xF888      UXTB     R8,R8            ;; ZeroExt  R8,R8,#+24,#+24
+   \   00000078   0xF830 0x0018      LDRH     R0,[R0, R8, LSL #+1]
+   \   0000007C   0x4682             MOV      R10,R0
+    268                           
+    269                  AD[m]=AD[n];
+   \   0000007E   0x....             LDR.N    R0,??DataTable5_6
+   \   00000080   0xFA5F 0xF989      UXTB     R9,R9            ;; ZeroExt  R9,R9,#+24,#+24
+   \   00000084   0xF830 0x0019      LDRH     R0,[R0, R9, LSL #+1]
+   \   00000088   0x....             LDR.N    R1,??DataTable5_6
+   \   0000008A   0xFA5F 0xF888      UXTB     R8,R8            ;; ZeroExt  R8,R8,#+24,#+24
+   \   0000008E   0xF821 0x0018      STRH     R0,[R1, R8, LSL #+1]
+    270                           
+    271                  AD[n]=temp;
+   \   00000092   0x....             LDR.N    R0,??DataTable5_6
+   \   00000094   0xFA5F 0xF989      UXTB     R9,R9            ;; ZeroExt  R9,R9,#+24,#+24
+   \   00000098   0xF820 0xA019      STRH     R10,[R0, R9, LSL #+1]
+    272                           
+    273                }
+    274                        
+    275              }
+   \                     ??ad_ave_mid_6: (+1)
+   \   0000009C   0xF119 0x0901      ADDS     R9,R9,#+1
+   \   000000A0   0xE7D6             B.N      ??ad_ave_mid_4
+    276                       
+    277              }
+   \                     ??ad_ave_mid_5: (+1)
+   \   000000A2   0xF118 0x0801      ADDS     R8,R8,#+1
+   \   000000A6   0xE7CA             B.N      ??ad_ave_mid_2
+    278                   
+    279                       
+    280                        for(i = 10; i < N-10; i++)
+   \                     ??ad_ave_mid_3: (+1)
+   \   000000A8   0x200A             MOVS     R0,#+10
+   \   000000AA   0x0007             MOVS     R7,R0
+   \                     ??ad_ave_mid_7: (+1)
+   \   000000AC   0xB2FF             UXTB     R7,R7            ;; ZeroExt  R7,R7,#+24,#+24
+   \   000000AE   0xB2F6             UXTB     R6,R6            ;; ZeroExt  R6,R6,#+24,#+24
+   \   000000B0   0xF1B6 0x000A      SUBS     R0,R6,#+10
+   \   000000B4   0x4287             CMP      R7,R0
+   \   000000B6   0xDA0B             BGE.N    ??ad_ave_mid_8
+    281                            {
+    282                               sum += AD[i];
+   \   000000B8   0x....             LDR.N    R0,??DataTable5_6
+   \   000000BA   0xB2FF             UXTB     R7,R7            ;; ZeroExt  R7,R7,#+24,#+24
+   \   000000BC   0xF830 0x0017      LDRH     R0,[R0, R7, LSL #+1]
+   \   000000C0   0x.... 0x....      BL       __aeabi_ui2f
+   \   000000C4   0x4659             MOV      R1,R11
+   \   000000C6   0x.... 0x....      BL       __aeabi_fadd
+   \   000000CA   0x4683             MOV      R11,R0
+    283                            }
+   \   000000CC   0x1C7F             ADDS     R7,R7,#+1
+   \   000000CE   0xE7ED             B.N      ??ad_ave_mid_7
+    284                    
+    285              return sum/(N-20);
+   \                     ??ad_ave_mid_8: (+1)
+   \   000000D0   0xB2F6             UXTB     R6,R6            ;; ZeroExt  R6,R6,#+24,#+24
+   \   000000D2   0xF1B6 0x0014      SUBS     R0,R6,#+20
+   \   000000D6   0x.... 0x....      BL       __aeabi_i2f
+   \   000000DA   0x0001             MOVS     R1,R0
+   \   000000DC   0x4658             MOV      R0,R11
+   \   000000DE   0x.... 0x....      BL       __aeabi_fdiv
+   \   000000E2   0xE8BD 0x8FF2      POP      {R1,R4-R11,PC}   ;; return
+    286          }
+    287          
+    288          
+    289          /*************************************************************************
+    290          *                               
+    291          *
+    292          *  函数名称：ad_flt
+    293          *  功能说明：一次采样后，与前几次采样，求平均值
+    294          *  参数说明：ADCx        模块号（ ADC0、 ADC1）
+    295          *            ADC_Channel 通道号
+    296          *            ADC_nbit    精度（ ADC_8bit,ADC_12bit, ADC_10bit, ADC_16bit ）
+    297          *  函数返回：16位无符号结果值
+    298          *  修改时间：2012-2-10
+    299          *  备    注：
+    300          *************************************************************************/
+    301          #define SAMP_COUNT  2       //向前滤波 2^SAMP_COUNT 次数  不能太大，不然采样不准
+
+   \                                 In section .text, align 2, keep-with-next
+    302          uint16 ad_flt(ADCn adcn, ADC_Ch ch, ADC_nbit bit)
+    303          {
+   \                     ad_flt: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0x000D             MOVS     R5,R1
+   \   00000006   0x0016             MOVS     R6,R2
+    304              static uint16 buf[(1<<(SAMP_COUNT))] = {0};  //保存前  2^SAMP_COUNT 次 的采样数据
+    305              static uint8 n = (uint8)(0x100 - (int8)(1 << (SAMP_COUNT)));
+    306              static uint32 sum = 0;
+    307          
+    308              //ASSERT( ((adcn == ADC0) && (ch >= AD8 && ch <= AD18)) || ((adcn == ADC1) && (ch >= AD4a && ch <= AD17)) ) ; //使用断言检测ADCn_CHn是否正常
+    309          
+    310              if(n >= (uint8)(0x100 - (int8)(1 << (SAMP_COUNT))))
+   \   00000008   0x....             LDR.N    R0,??DataTable5_7
+   \   0000000A   0x7800             LDRB     R0,[R0, #+0]
+   \   0000000C   0x28FC             CMP      R0,#+252
+   \   0000000E   0xDB25             BLT.N    ??ad_flt_0
+    311              {
+    312                  buf[(uint8)((1<<(SAMP_COUNT))+n)] = ad_once(adcn, ch, bit);
+   \   00000010   0x0032             MOVS     R2,R6
+   \   00000012   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   00000014   0x0029             MOVS     R1,R5
+   \   00000016   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000018   0x0020             MOVS     R0,R4
+   \   0000001A   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   0000001C   0x.... 0x....      BL       ad_once
+   \   00000020   0x....             LDR.N    R1,??DataTable5_8
+   \   00000022   0x....             LDR.N    R2,??DataTable5_7
+   \   00000024   0x7812             LDRB     R2,[R2, #+0]
+   \   00000026   0x1D12             ADDS     R2,R2,#+4
+   \   00000028   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   0000002A   0xF821 0x0012      STRH     R0,[R1, R2, LSL #+1]
+    313                  sum += buf[(uint8)((1<<(SAMP_COUNT))+n)];
+   \   0000002E   0x....             LDR.N    R0,??DataTable5_9
+   \   00000030   0x6800             LDR      R0,[R0, #+0]
+   \   00000032   0x....             LDR.N    R1,??DataTable5_8
+   \   00000034   0x....             LDR.N    R2,??DataTable5_7
+   \   00000036   0x7812             LDRB     R2,[R2, #+0]
+   \   00000038   0x1D12             ADDS     R2,R2,#+4
+   \   0000003A   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   0000003C   0xF831 0x1012      LDRH     R1,[R1, R2, LSL #+1]
+   \   00000040   0xFA10 0xF081      UXTAH    R0,R0,R1
+   \   00000044   0x....             LDR.N    R1,??DataTable5_9
+   \   00000046   0x6008             STR      R0,[R1, #+0]
+    314                  n++;
+   \   00000048   0x....             LDR.N    R0,??DataTable5_7
+   \   0000004A   0x7800             LDRB     R0,[R0, #+0]
+   \   0000004C   0x1C40             ADDS     R0,R0,#+1
+   \   0000004E   0x....             LDR.N    R1,??DataTable5_7
+   \   00000050   0x7008             STRB     R0,[R1, #+0]
+    315                  return ((uint16)(sum >> SAMP_COUNT));
+   \   00000052   0x....             LDR.N    R0,??DataTable5_9
+   \   00000054   0x6800             LDR      R0,[R0, #+0]
+   \   00000056   0x0880             LSRS     R0,R0,#+2
+   \   00000058   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   0000005A   0xE031             B.N      ??ad_flt_1
+    316              }
+    317          
+    318              sum -= buf[n];
+   \                     ??ad_flt_0: (+1)
+   \   0000005C   0x....             LDR.N    R0,??DataTable5_9
+   \   0000005E   0x6800             LDR      R0,[R0, #+0]
+   \   00000060   0x....             LDR.N    R1,??DataTable5_8
+   \   00000062   0x....             LDR.N    R2,??DataTable5_7
+   \   00000064   0x7812             LDRB     R2,[R2, #+0]
+   \   00000066   0xF831 0x1012      LDRH     R1,[R1, R2, LSL #+1]
+   \   0000006A   0x1A40             SUBS     R0,R0,R1
+   \   0000006C   0x....             LDR.N    R1,??DataTable5_9
+   \   0000006E   0x6008             STR      R0,[R1, #+0]
+    319              buf[n] = ad_once(adcn, ch, bit);
+   \   00000070   0x0032             MOVS     R2,R6
+   \   00000072   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \   00000074   0x0029             MOVS     R1,R5
+   \   00000076   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \   00000078   0x0020             MOVS     R0,R4
+   \   0000007A   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \   0000007C   0x.... 0x....      BL       ad_once
+   \   00000080   0x....             LDR.N    R1,??DataTable5_8
+   \   00000082   0x....             LDR.N    R2,??DataTable5_7
+   \   00000084   0x7812             LDRB     R2,[R2, #+0]
+   \   00000086   0xF821 0x0012      STRH     R0,[R1, R2, LSL #+1]
+    320              sum += buf[n];
+   \   0000008A   0x....             LDR.N    R0,??DataTable5_9
+   \   0000008C   0x6800             LDR      R0,[R0, #+0]
+   \   0000008E   0x....             LDR.N    R1,??DataTable5_8
+   \   00000090   0x....             LDR.N    R2,??DataTable5_7
+   \   00000092   0x7812             LDRB     R2,[R2, #+0]
+   \   00000094   0xF831 0x1012      LDRH     R1,[R1, R2, LSL #+1]
+   \   00000098   0xFA10 0xF081      UXTAH    R0,R0,R1
+   \   0000009C   0x....             LDR.N    R1,??DataTable5_9
+   \   0000009E   0x6008             STR      R0,[R1, #+0]
+    321          
+    322              if (++n >= (1 << (SAMP_COUNT)))
+   \   000000A0   0x....             LDR.N    R0,??DataTable5_7
+   \   000000A2   0x7800             LDRB     R0,[R0, #+0]
+   \   000000A4   0x1C40             ADDS     R0,R0,#+1
+   \   000000A6   0x....             LDR.N    R1,??DataTable5_7
+   \   000000A8   0x7008             STRB     R0,[R1, #+0]
+   \   000000AA   0x....             LDR.N    R0,??DataTable5_7
+   \   000000AC   0x7800             LDRB     R0,[R0, #+0]
+   \   000000AE   0x2804             CMP      R0,#+4
+   \   000000B0   0xDB02             BLT.N    ??ad_flt_2
+    323              {
+    324                  n = 0;
+   \   000000B2   0x2000             MOVS     R0,#+0
+   \   000000B4   0x....             LDR.N    R1,??DataTable5_7
+   \   000000B6   0x7008             STRB     R0,[R1, #+0]
+    325              }
+    326              return ((uint16)(sum >> SAMP_COUNT)); /* ADC采样值由若干次采样值平均 */
+   \                     ??ad_flt_2: (+1)
+   \   000000B8   0x....             LDR.N    R0,??DataTable5_9
+   \   000000BA   0x6800             LDR      R0,[R0, #+0]
+   \   000000BC   0x0880             LSRS     R0,R0,#+2
+   \   000000BE   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \                     ??ad_flt_1: (+1)
+   \   000000C0   0xBD70             POP      {R4-R6,PC}       ;; return
+    327          }
+
+   \                                 In section .bss, align 4
+   \                     ??buf:
+   \   00000000                      DS8 8
+
+   \                                 In section .data, align 1
+   \                     ??n:
+   \   00000000   0xFC               DC8 252
+
+   \                                 In section .bss, align 4
+   \                     ??sum:
+   \   00000000                      DS8 4
+    328          #undef  SAMP_COUNT
+    329          
+    330          
+    331          
+    332          
+    333          /*************************************************************************
+    334          *                               
+    335          *
+    336          *  函数名称：adc_start
+    337          *  功能说明：启动adc软件采样，B通道不能用于软件触发！！！！
+    338          *  参数说明：ADCx        模块号（ ADC0、 ADC1）
+    339          *            ADC_Channel 通道号
+    340          *            ADC_nbit    精度（ ADC_8bit,ADC_12bit, ADC_10bit, ADC_16bit ）
+    341          *  函数返回：无
+    342          *  修改时间：2012-2-10
+    343          *  备    注：修改苏州大学的例程
+    344          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    345          void adc_start(ADCn adcn, ADC_Ch ch, ADC_nbit bit)
+    346          {
+   \                     adc_start: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+   \   00000004   0x000D             MOVS     R5,R1
+   \   00000006   0x0016             MOVS     R6,R2
+    347          
+    348              Master_Adc_Config.STATUS1A = AIEN_ON | DIFF_SINGLE | ADC_SC1_ADCH( ch );
+   \   00000008   0xF015 0x001F      ANDS     R0,R5,#0x1F
+   \   0000000C   0xF050 0x0040      ORRS     R0,R0,#0x40
+   \   00000010   0x....             LDR.N    R1,??DataTable5_10
+   \   00000012   0x7208             STRB     R0,[R1, #+8]
+    349          
+    350              //初始化ADC默认配置
+    351              Master_Adc_Config.CONFIG1  = ADLPC_NORMAL
+    352                                           | ADC_CFG1_ADIV(ADIV_4)
+    353                                           | ADLSMP_LONG
+    354                                           | ADC_CFG1_MODE(bit)
+    355                                           | ADC_CFG1_ADICLK(ADICLK_BUS);
+   \   00000014   0x00B0             LSLS     R0,R6,#+2
+   \   00000016   0xF010 0x000C      ANDS     R0,R0,#0xC
+   \   0000001A   0xF050 0x0050      ORRS     R0,R0,#0x50
+   \   0000001E   0x....             LDR.N    R1,??DataTable5_10
+   \   00000020   0x7008             STRB     R0,[R1, #+0]
+    356              Master_Adc_Config.CONFIG2  = MUXSEL_ADCA    //MUXSEL_ADCA
+    357                                           | ADACKEN_DISABLED
+    358                                           | ADHSC_HISPEED
+    359                                           | ADC_CFG2_ADLSTS(ADLSTS_20) ;
+   \   00000022   0x2004             MOVS     R0,#+4
+   \   00000024   0x....             LDR.N    R1,??DataTable5_10
+   \   00000026   0x7048             STRB     R0,[R1, #+1]
+    360          
+    361              Master_Adc_Config.COMPARE1 = 0x1234u ;                 //任意值
+   \   00000028   0xF241 0x2034      MOVW     R0,#+4660
+   \   0000002C   0x....             LDR.N    R1,??DataTable5_10
+   \   0000002E   0x8048             STRH     R0,[R1, #+2]
+    362              Master_Adc_Config.COMPARE2 = 0x5678u ;                 //任意值
+   \   00000030   0xF245 0x6078      MOVW     R0,#+22136
+   \   00000034   0x....             LDR.N    R1,??DataTable5_10
+   \   00000036   0x8088             STRH     R0,[R1, #+4]
+    363          
+    364              adc_config_alt(ADCx[adcn], &Master_Adc_Config);       // 配置 ADCn
+   \   00000038   0x....             LDR.N    R1,??DataTable5_10
+   \   0000003A   0x....             LDR.N    R0,??DataTable5_5
+   \   0000003C   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   0000003E   0xF850 0x0024      LDR      R0,[R0, R4, LSL #+2]
+   \   00000042   0x.... 0x....      BL       adc_config_alt
+    365          }
+   \   00000046   0xBD70             POP      {R4-R6,PC}       ;; return
+    366          
+    367          /*************************************************************************
+    368          *                               
+    369          *
+    370          *  函数名称：adc_stop
+    371          *  功能说明：停止ADC转换
+    372          *  参数说明：ADCx        模块号（ ADC0、 ADC1）
+    373          *            ADC_Channel 通道号
+    374          *  函数返回：无
+    375          *  修改时间：2012-2-10
+    376          *  备    注：修改苏州大学的例程
+    377          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    378          void adc_stop(ADCn adcn)
+    379          {
+   \                     adc_stop: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x0004             MOVS     R4,R0
+    380              Master_Adc_Config.STATUS1A = AIEN_ON | DIFF_SINGLE | ADC_SC1_ADCH(Module_disabled);
+   \   00000004   0x205F             MOVS     R0,#+95
+   \   00000006   0x....             LDR.N    R1,??DataTable5_10
+   \   00000008   0x7208             STRB     R0,[R1, #+8]
+    381              adc_config_alt(ADCx[adcn], &Master_Adc_Config);  // 配置ADC0
+   \   0000000A   0x....             LDR.N    R1,??DataTable5_10
+   \   0000000C   0x....             LDR.N    R0,??DataTable5_5
+   \   0000000E   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \   00000010   0xF850 0x0024      LDR      R0,[R0, R4, LSL #+2]
+   \   00000014   0x.... 0x....      BL       adc_config_alt
+    382          }
+   \   00000018   0xBD10             POP      {R4,PC}          ;; return
+    383          
+    384          
+    385          /*************************************************************************
+    386          *                               
+    387          *
+    388          *  函数名称：adc_config_alt
+    389          *  功能说明：将adc寄存器结构体配置进adc寄存器
+    390          *  参数说明：adcmap      adc基址寄存器地址（ADC0_BASE_PTR,ADC1_BASE_PTR）
+    391          *            ADC_CfgPtr  存放 寄存器值的结构体
+    392          *  函数返回：无
+    393          *  修改时间：2012-2-10
+    394          *  备    注：修改官方工程的例程
+    395          *************************************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    396          void adc_config_alt(ADC_MemMapPtr adcmap, tADC_ConfigPtr ADC_CfgPtr)
+    397          {
+    398              ADC_CFG1_REG(adcmap) = ADC_CfgPtr->CONFIG1;
+   \                     adc_config_alt: (+1)
+   \   00000000   0x780A             LDRB     R2,[R1, #+0]
+   \   00000002   0x6082             STR      R2,[R0, #+8]
+    399              ADC_CFG2_REG(adcmap) = ADC_CfgPtr->CONFIG2;
+   \   00000004   0x784A             LDRB     R2,[R1, #+1]
+   \   00000006   0x60C2             STR      R2,[R0, #+12]
+    400              ADC_CV1_REG(adcmap)  = ADC_CfgPtr->COMPARE1;
+   \   00000008   0x884A             LDRH     R2,[R1, #+2]
+   \   0000000A   0x6182             STR      R2,[R0, #+24]
+    401              ADC_CV2_REG(adcmap)  = ADC_CfgPtr->COMPARE2;
+   \   0000000C   0x888A             LDRH     R2,[R1, #+4]
+   \   0000000E   0x61C2             STR      R2,[R0, #+28]
+    402              ADC_SC2_REG(adcmap)  = ADC_CfgPtr->STATUS2;
+   \   00000010   0x798A             LDRB     R2,[R1, #+6]
+   \   00000012   0x6202             STR      R2,[R0, #+32]
+    403              ADC_SC3_REG(adcmap)  = ADC_CfgPtr->STATUS3;
+   \   00000014   0x79CA             LDRB     R2,[R1, #+7]
+   \   00000016   0x6242             STR      R2,[R0, #+36]
+    404              ADC_PGA_REG(adcmap)  = ADC_CfgPtr->PGA;
+   \   00000018   0x68CA             LDR      R2,[R1, #+12]
+   \   0000001A   0x6502             STR      R2,[R0, #+80]
+    405              ADC_SC1_REG(adcmap, A) = ADC_CfgPtr->STATUS1A;
+   \   0000001C   0x7A0A             LDRB     R2,[R1, #+8]
+   \   0000001E   0x6002             STR      R2,[R0, #+0]
+    406              ADC_SC1_REG(adcmap, B) = ADC_CfgPtr->STATUS1B;
+   \   00000020   0x7A4A             LDRB     R2,[R1, #+9]
+   \   00000022   0x6042             STR      R2,[R0, #+4]
+    407          }
+   \   00000024   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5:
+   \   00000000   0x4004803C         DC32     0x4004803c
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_1:
+   \   00000000   0x40048018         DC32     0x40048018
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_2:
+   \   00000000   0x40048038         DC32     0x40048038
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_3:
+   \   00000000   0x40048030         DC32     0x40048030
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_4:
+   \   00000000   0x40049000         DC32     0x40049000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_5:
+   \   00000000   0x........         DC32     ADCx
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_6:
+   \   00000000   0x........         DC32     AD
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_7:
+   \   00000000   0x........         DC32     ??n
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_8:
+   \   00000000   0x........         DC32     ??buf
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_9:
+   \   00000000   0x........         DC32     ??sum
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable5_10:
+   \   00000000   0x........         DC32     Master_Adc_Config
+
+   \                                 In section .rodata, align 4
+   \   00000000   0x0000             DC16 0
+   \   00000002   0x00 0x00          DC8 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+    408          
+    409          
+    410          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      32   ad_ave
+        32   -> __aeabi_fadd
+        32   -> __aeabi_fdiv
+        32   -> __aeabi_ui2f
+        32   -> ad_once
+      40   ad_ave_mid
+        40   -> __aeabi_fadd
+        40   -> __aeabi_fdiv
+        40   -> __aeabi_i2f
+        40   -> __aeabi_ui2f
+        40   -> ad_once
+      16   ad_flt
+        16   -> ad_once
+      32   ad_mid
+        32   -> ad_once
+      32   ad_mid_last
+        32   -> ad_once
+       8   ad_once
+       0   adc_config_alt
+       0   adc_init
+      16   adc_start
+        16   -> adc_config_alt
+       8   adc_stop
+         8   -> adc_config_alt
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_10
+       4  ??DataTable5_2
+       4  ??DataTable5_3
+       4  ??DataTable5_4
+       4  ??DataTable5_5
+       4  ??DataTable5_6
+       4  ??DataTable5_7
+       4  ??DataTable5_8
+       4  ??DataTable5_9
+       8  ?_0
+     100  AD
+       8  ADCx
+      16  Master_Adc_Config
+      84  ad_ave
+     230  ad_ave_mid
+     194  ad_flt
+     116  ad_mid
+     116  ad_mid_last
+      70  ad_once
+      38  adc_config_alt
+     682  adc_init
+      72  adc_start
+      26  adc_stop
+       8  buf
+       1  n
+       4  sum
+
+ 
+   128 bytes in section .bss
+     9 bytes in section .data
+     8 bytes in section .rodata
+ 1 672 bytes in section .text
+ 
+ 1 672 bytes of CODE  memory
+     8 bytes of CONST memory
+   137 bytes of DATA  memory
+
+Errors: none
+Warnings: none
